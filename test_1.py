@@ -1,30 +1,39 @@
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
+
+from kivy.uix.checkbox import CheckBox
 from kivy.uix.label import Label
-from kivy.uix.togglebutton import ToggleButton
+
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.boxlayout import BoxLayout
 
 
-class RadioButtonApp(App):
+class GenderLayout(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.orientation = "horizontal"
+
+        self.man_checkbox = CheckBox(group="gender")
+        self.man_label = Label(text="Мужской")
+        self.add_widget(self.man_checkbox)
+        self.add_widget(self.man_label)
+
+        self.woman_checkbox = CheckBox(group="gender")
+        self.woman_label = Label(text="Женский")
+        self.add_widget(self.woman_checkbox)
+        self.add_widget(self.woman_label)
+
+    def on_radiobutton(self, instance, value):
+        print(instance.label)
+
+
+class MyApp(App):
     def build(self):
-        layout = BoxLayout(orientation='vertical')
+        self.layout = AnchorLayout()
+        self.gender_layout = GenderLayout()
 
-        # Создаем группу радиокнопок
-        radio_group = []
-
-        for i in range(3):
-            radio_button = ToggleButton(text=f'Option {i + 1}', group='options')
-            radio_button.bind(on_press=self.on_radio_button_press)
-            radio_group.append(radio_button)
-            layout.add_widget(radio_button)
-
-        self.result_label = Label(text="Выбрана опция: None")
-        layout.add_widget(self.result_label)
-
-        return layout
-
-    def on_radio_button_press(self, instance):
-        self.result_label.text = f"Выбрана опция: {instance.text}"
+        self.layout.add_widget(self.gender_layout)
+        return self.layout
 
 
-if __name__ == '__main__':
-    RadioButtonApp().run()
+if __name__ == "__main__":
+    MyApp().run()
