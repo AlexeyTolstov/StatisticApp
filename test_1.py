@@ -1,39 +1,21 @@
 from kivy.app import App
-
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.label import Label
-
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
-
-
-class GenderLayout(BoxLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.orientation = "horizontal"
-
-        self.man_checkbox = CheckBox(group="gender")
-        self.man_label = Label(text="Мужской")
-        self.add_widget(self.man_checkbox)
-        self.add_widget(self.man_label)
-
-        self.woman_checkbox = CheckBox(group="gender")
-        self.woman_label = Label(text="Женский")
-        self.add_widget(self.woman_checkbox)
-        self.add_widget(self.woman_label)
-
-    def on_radiobutton(self, instance, value):
-        print(instance.label)
-
+from kivy.uix.button import Button
+from kivy.uix.label import Label
 
 class MyApp(App):
     def build(self):
-        self.layout = AnchorLayout()
-        self.gender_layout = GenderLayout()
-
-        self.layout.add_widget(self.gender_layout)
+        self.layout = BoxLayout(orientation='vertical')
+        self.label = Label(text="Это виджет, который вы хотите удалить")
+        self.button = Button(text="Удалить виджет")
+        self.button.bind(on_press=self.remove_widget)
+        self.layout.add_widget(self.label)
+        self.layout.add_widget(self.button)
         return self.layout
 
+    def remove_widget(self, instance):
+        # Удаление виджета (self.label) из родительского виджета (self.layout)
+        self.layout.remove_widget(self.label)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     MyApp().run()
