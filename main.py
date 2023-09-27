@@ -12,7 +12,8 @@ class MyApp(App):
         super().__init__(**kwargs)
         self.layouts_lst = [WelcomePage(),
                             RegistrationPage(),
-                            InterestsPage()]
+                            InterestsPage(),
+                            ResultPage()]
 
         self.opened_page_ind = 0
         self.opened_page = self.layouts_lst[self.opened_page_ind]
@@ -30,10 +31,16 @@ class MyApp(App):
         return self.main_layout
 
     def next_page(self, _):
-        self.main_layout.remove_widget(self.opened_page)
-        self.opened_page_ind += 1
-        self.opened_page = self.layouts_lst[self.opened_page_ind]
-        self.main_layout.add_widget(self.opened_page)
+        try:
+            res = self.opened_page.isCanNext()
+        except AttributeError:
+            res = True
+
+        if res:
+            self.main_layout.remove_widget(self.opened_page)
+            self.opened_page_ind = (self.opened_page_ind + 1) % len(self.layouts_lst)
+            self.opened_page = self.layouts_lst[self.opened_page_ind]
+            self.main_layout.add_widget(self.opened_page)
 
 
 if __name__ == "__main__":

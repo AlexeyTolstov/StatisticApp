@@ -30,9 +30,10 @@ class GenderLayout(BoxLayout):
 
     @staticmethod
     def on_radiobutton(instance, value):
-        # if value:
-        #     print(instance.label.text)
         pass
+
+    def check_data(self):
+        return self.man_checkbox.active or self.woman_checkbox.active
 
 
 class NumberInput(TextInput):
@@ -51,7 +52,13 @@ class NumberInput(TextInput):
                     self.text = value[:2]
         elif self.type_input == "phone":
             pass
-        print(value)
+        # print(value)
+
+    def check_data(self):
+        if self.type_input == "age":
+            if self.text:
+                return True
+        return False
 
 
 class MultiplyChoiceCheckBox(BoxLayout):
@@ -75,11 +82,10 @@ class MultiplyChoiceCheckBox(BoxLayout):
             self.lst.append(layout.cb)
             self.add_widget(layout)
 
-    def check_checkbox(self):
+    def check_data(self):
         res = 0
         for i in self.lst:
             if i.active:
                 res += 1
-        if res < 3:
-            return False
-        return True
+
+        return 1 <= res <= 2
