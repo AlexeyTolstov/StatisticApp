@@ -40,6 +40,7 @@ class NumberInput(TextInput):
         super().__init__(**kwargs)
         self.multiline = False
         self.type_input = type_input
+        self.halign = "center"
 
     def press_keyboard(self, instance, value):
         if self.type_input == "age":
@@ -54,12 +55,31 @@ class NumberInput(TextInput):
 
 
 class MultiplyChoiceCheckBox(BoxLayout):
-    def __init__(self, choices):
-        super().__init__()
+    def __init__(self, choices, **kwargs):
+        super().__init__(**kwargs)
         self.orientation = "vertical"
 
+        self.height = 70
+        self.width = 250
+
+        self.lst = []
+
         for choice in choices:
-            cb = CheckBox()
-            cb.label = Label(text=choice)
-            self.add_widget(cb)
-            self.add_widget(cb.label)
+            layout = BoxLayout(orientation="horizontal")
+            layout.cb = CheckBox()
+            layout.cb.label = Label(text=choice)
+
+            layout.add_widget(layout.cb)
+            layout.add_widget(layout.cb.label)
+
+            self.lst.append(layout.cb)
+            self.add_widget(layout)
+
+    def check_checkbox(self):
+        res = 0
+        for i in self.lst:
+            if i.active:
+                res += 1
+        if res < 3:
+            return False
+        return True
