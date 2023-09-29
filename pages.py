@@ -7,6 +7,9 @@ data_dict = {}
 
 class WelcomePage(FloatLayout):
     def __init__(self):
+        global data_dict
+
+        data_dict = {}
         super().__init__()
 
         self.welcome_label = Label(text="Добрый день",
@@ -106,7 +109,11 @@ class RegistrationPage(FloatLayout):
             data_dict["gender"] = "Женский пол"
 
         data_dict["age"] = self.age_input.text
-        data_dict["phone"] = self.telephone_input.text
+
+        if len(self.telephone_input.text) < 7:
+            data_dict["phone"] = None
+        else:
+            data_dict["phone"] = self.telephone_input.text
 
 
 class InterestsPage(FloatLayout):
@@ -158,18 +165,21 @@ class InterestsPage(FloatLayout):
 class FavoriteSectionPage(FloatLayout):
     def __init__(self):
         super().__init__()
+        self.favorite_section_lst = ["Производственное", "Научное", "Правовое",
+                                    "Предпринимательское", "Философское", "Художественное",
+                                    "Музыкальное", "Спортивное", "Военно-тактическое"]
 
         self.favorite_section_label = Label(text="Список предпочитаемого творчества",
                                        size_hint=(.1, .5),
-                                       pos_hint={'center_x': 0.5, 'center_y': 0.6},
+                                       pos_hint={'center_x': 0.5, 'center_y': 0.9},
                                        halign="center")
 
-        self.favorite_section = MultiplyChoiceCheckBox(["Музыкалка", "Художка"],
-                        size_hint=(.4, .1),
-                        pos_hint={'center_x': 0.5, 'center_y': 0.53})
+        self.favorite_section = MultiplyChoiceCheckBox(self.favorite_section_lst,
+                        size_hint=(.75, .5),
+                        pos_hint={'center_x': 0.4, 'center_y': 0.5})
 
         self.favorite_section_label_not = Label(size_hint=(.1, .2),
-                                           pos_hint={'center_x': 0.5, 'center_y': 0.45},
+                                           pos_hint={'center_x': 0.5, 'center_y': 0.2},
                                            color=[1, 0, 0, 1],
                                            halign="center")
 
@@ -195,14 +205,21 @@ class FavoriteSectionPage(FloatLayout):
 class RestPage(FloatLayout):
     def __init__(self):
         super().__init__()
+        self.rest_lst = ["Спорт (активный отдых)",
+                        "Чтение книг (комиксов)",
+                        "Творчество (лепка, \nрисование, бисер и т.д.)",
+                        "Компьютерные игры",
+                        "Просмотр чего-либо (YouTube, \nфильмы, мультфильмы и т.д.)",
+                        "Лежание на диване"]
+
         self.rest_label = Label(text="Список предпочитаемого отдыха",
                                 size_hint=(.1, .5),
-                                pos_hint={'center_x': 0.5, 'center_y': 0.4},
+                                pos_hint={'center_x': 0.55, 'center_y': 0.8},
                                 halign="center")
 
-        self.rest = MultiplyChoiceCheckBox(["Активный", "Пассивный"],
-                        size_hint=(.4, .1),
-                        pos_hint={'center_x': 0.5, 'center_y': 0.33})
+        self.rest = MultiplyChoiceCheckBox(self.rest_lst,
+                        size_hint=(.7, .4),
+                        pos_hint={'center_x': 0.4, 'center_y': 0.5})
 
         self.rest_label_not = Label(size_hint=(.1, .2),
                                     pos_hint={'center_x': 0.5, 'center_y': 0.25},
@@ -236,8 +253,10 @@ class ResultPage(FloatLayout):
                                    pos_hint={'center_x': 0.5, 'center_y': 0.9},
                                    size_hint=(0.1, 0.05),
                                    font_size=30)
-
-        self.info_text = Label(text=f"Пол: {data_dict['gender']}\nВозраст: {data_dict['age']}\nТелефон: {data_dict['phone']}\n" +
-                               f"Интересы: {data_dict['interests']}\n Любимые секции: {data_dict['favorite_sections']}\nОтдых: {data_dict['rests']}")
+        rests = '\n'.join(data_dict['rests'])
+        interests = '\n'.join(data_dict['interests'])
+        favorite_section = '\n'.join(data_dict['favorite_sections'])
+        self.info_text = Label(text=f"Пол: {data_dict['gender']}\n\nВозраст: {data_dict['age']}\n\nТелефон: {data_dict['phone']}\n\n" +
+                               f"Интересы: {interests}\n\nЛюбимые секции: {favorite_section}\n\nОтдых: {rests}")
         self.add_widget(self.welcome_label)
         self.add_widget(self.info_text)

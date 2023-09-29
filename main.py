@@ -4,6 +4,8 @@ from kivy.core.window import Window
 
 from pages import *
 
+Window.size = (360, 640)
+
 
 class MyApp(App):
     def __init__(self, **kwargs):
@@ -20,7 +22,7 @@ class MyApp(App):
         self.btn_next = Button(text="Следущая страница",
                                pos_hint={'center_x': 0.5,
                                          'center_y': 0.1},
-                               size_hint=(0.45, 0.1))
+                               size_hint=(0.5, 0.1))
         self.btn_next.bind(on_press=self.next_page)
 
         self.main_layout = FloatLayout()
@@ -34,6 +36,19 @@ class MyApp(App):
             res = self.opened_page.is_can_next()
         except AttributeError:
             res = True
+
+        if self.opened_page_ind == 0:
+            self.layouts_lst = [WelcomePage(),
+                                RegistrationPage(),
+                                InterestsPage(),
+                                FavoriteSectionPage(),
+                                RestPage()]
+        elif self.opened_page_ind == 3:
+            self.btn_next.text = "Завершить"
+        elif self.opened_page_ind == 4:
+            self.btn_next.text = "Перейти на главную страницу"
+        else:
+            self.btn_next.text = "Следущая страница"
 
         if res:
             if self.opened_page_ind == 4:
