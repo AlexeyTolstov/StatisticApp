@@ -22,7 +22,7 @@ class MyApp(App):
         self.btn_next = Button(text="Следущая страница",
                                pos_hint={'center_x': 0.5,
                                          'center_y': 0.1},
-                               size_hint=(0.5, 0.1))
+                               size_hint=(0.45, 0.1))
         self.btn_next.bind(on_press=self.next_page)
 
         self.main_layout = FloatLayout()

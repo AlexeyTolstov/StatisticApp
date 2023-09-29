@@ -9,10 +9,6 @@ class GenderLayout(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
-        self.height = 70
-        self.width = 250
-        self.size_hint_y = None
-        self.size_hint_x = None
 
         self.man_checkbox = CheckBox(group="gender")
         self.man_checkbox.label = Label(text="Мужской")

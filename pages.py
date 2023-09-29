@@ -34,8 +34,8 @@ class RegistrationPage(FloatLayout):
                                             'center_y': 0.75},
                                   halign="center")
 
-        self.gender_layout = GenderLayout(
-            pos_hint={'center_x': 0.5, 'center_y': 0.7})
+        self.gender_layout = GenderLayout(pos_hint={'center_x': 0.5, 'center_y': 0.67},
+                                          size_hint=(.6, .1))
 
         self.gender_not_label = Label(pos_hint={'center_x': 0.5,
                                             'center_y': 0.65},
