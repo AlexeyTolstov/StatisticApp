@@ -1,10 +1,8 @@
 from kivy.app import App
+from kivy.uix.button import Button
 from kivy.core.window import Window
 
-from customwidgets import *
 from pages import *
-
-Window.size = (360, 640)
 
 
 class MyApp(App):
@@ -13,7 +11,8 @@ class MyApp(App):
         self.layouts_lst = [WelcomePage(),
                             RegistrationPage(),
                             InterestsPage(),
-                            ResultPage()]
+                            FavoriteSectionPage(),
+                            RestPage()]
 
         self.opened_page_ind = 0
         self.opened_page = self.layouts_lst[self.opened_page_ind]
@@ -32,11 +31,14 @@ class MyApp(App):
 
     def next_page(self, _):
         try:
-            res = self.opened_page.isCanNext()
+            res = self.opened_page.is_can_next()
         except AttributeError:
             res = True
 
         if res:
+            if self.opened_page_ind == 4:
+                self.layouts_lst.append(ResultPage())
+
             self.main_layout.remove_widget(self.opened_page)
             self.opened_page_ind = (self.opened_page_ind + 1) % len(self.layouts_lst)
             self.opened_page = self.layouts_lst[self.opened_page_ind]

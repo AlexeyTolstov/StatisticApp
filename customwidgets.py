@@ -1,10 +1,8 @@
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
-from kivy.uix.button import Button
 
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
 
 
 class GenderLayout(BoxLayout):
@@ -42,8 +40,10 @@ class NumberInput(TextInput):
         self.multiline = False
         self.type_input = type_input
         self.halign = "center"
+        if type_input == "phone":
+            self.hint_text = "+7 XXX XXX XX-XX"
 
-    def press_keyboard(self, instance, value):
+    def press_keyboard(self, _, value):
         if self.type_input == "age":
             if value:
                 if not value.isdigit():
@@ -52,7 +52,6 @@ class NumberInput(TextInput):
                     self.text = value[:2]
         elif self.type_input == "phone":
             pass
-        # print(value)
 
     def check_data(self):
         if self.type_input == "age":
@@ -89,3 +88,11 @@ class MultiplyChoiceCheckBox(BoxLayout):
                 res += 1
 
         return 1 <= res <= 2
+
+    def get_data(self):
+        lst = []
+        for i in self.lst:
+            if i.active:
+                lst.append(i.label.text)
+
+        return lst
