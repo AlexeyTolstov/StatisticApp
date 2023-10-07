@@ -1,6 +1,7 @@
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
+from kivy.uix.dropdown import DropDown
+from kivy.uix.button import Button
 
 from kivy.uix.boxlayout import BoxLayout
 
@@ -11,13 +12,17 @@ class GenderLayout(BoxLayout):
         self.orientation = "horizontal"
 
         self.man_checkbox = CheckBox(group="gender")
-        self.man_checkbox.label = Label(text="Мужской")
+        self.man_checkbox.label = Label(text="Мужской",
+                                        bold=True,
+                                        font_size=20)
         self.add_widget(self.man_checkbox)
         self.add_widget(self.man_checkbox.label)
         self.man_checkbox.bind(active=self.on_radiobutton)
 
         self.woman_checkbox = CheckBox(group="gender")
-        self.woman_checkbox.label = Label(text="Женский")
+        self.woman_checkbox.label = Label(text="Женский",
+                                          bold=True,
+                                          font_size=20)
         self.add_widget(self.woman_checkbox)
         self.add_widget(self.woman_checkbox.label)
         self.woman_checkbox.bind(active=self.on_radiobutton)
@@ -30,30 +35,63 @@ class GenderLayout(BoxLayout):
         return self.man_checkbox.active or self.woman_checkbox.active
 
 
-class NumberInput(TextInput):
-    def __init__(self, type_input, **kwargs):
+class DropDownClasses(DropDown):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.multiline = False
-        self.type_input = type_input
-        self.halign = "center"
-        if type_input == "phone":
-            self.hint_text = "+7 XXX XXX XX-XX"
+        self.max_height = 300
+        self.container.spacing = 2
+        for i in range(1, 12):
+            btn = Button(text=str(i),
+                         size_hint_y=None,
+                         height=60,
+                         background_color=(.9, .3, .3, 1),
+                         background_normal="")
 
-    def press_keyboard(self, _, value):
-        if self.type_input == "age":
-            if value:
-                if not value.isdigit():
-                    self.text = value[:-1]
-                elif int(value) > 99:
-                    self.text = value[:2]
-        elif self.type_input == "phone":
-            pass
+            btn.bind(on_release=lambda btn_: self.select(btn_.text))
+            self.add_widget(btn)
 
-    def check_data(self):
-        if self.type_input == "age":
-            if self.text:
-                return True
-        return False
+
+class NumberKeyboard(BoxLayout):
+    def __init__(self, label, **kwargs):
+        super().__init__(**kwargs)
+        self.orientation = "vertical"
+
+        row1 = BoxLayout(orientation="horizontal")
+        self.btn_1 = Button(text="1")
+        row1.add_widget(self.btn_1)
+        self.btn_2 = Button(text="2")
+        row1.add_widget(self.btn_2)
+        self.btn_3 = Button(text="3")
+        row1.add_widget(self.btn_3)
+
+        row2 = BoxLayout(orientation="horizontal")
+        self.btn_4 = Button(text="4")
+        row2.add_widget(self.btn_4)
+        self.btn_5 = Button(text="5")
+        row2.add_widget(self.btn_5)
+        self.btn_6 = Button(text="6")
+        row2.add_widget(self.btn_6)
+
+        row3 = BoxLayout(orientation="horizontal")
+        self.btn_7 = Button(text="7")
+        row3.add_widget(self.btn_7)
+        self.btn_8 = Button(text="8")
+        row3.add_widget(self.btn_8)
+        self.btn_9 = Button(text="9")
+        row3.add_widget(self.btn_9)
+
+        row4 = BoxLayout(orientation="horizontal")
+        self.btn_enter = Button(text="_/")
+        row4.add_widget(self.btn_enter)
+        self.btn_0 = Button(text="0")
+        row4.add_widget(self.btn_0)
+        self.btn_delete = Button(text="DEL")
+        row4.add_widget(self.btn_delete)
+
+        self.add_widget(row1)
+        self.add_widget(row2)
+        self.add_widget(row3)
+        self.add_widget(row4)
 
 
 class MultiplyChoiceCheckBox(BoxLayout):
@@ -69,7 +107,7 @@ class MultiplyChoiceCheckBox(BoxLayout):
         for choice in choices:
             layout = BoxLayout(orientation="horizontal")
             layout.cb = CheckBox()
-            layout.cb.label = Label(text=choice)
+            layout.cb.label = Label(text=str(choice))
 
             layout.add_widget(layout.cb)
             layout.add_widget(layout.cb.label)

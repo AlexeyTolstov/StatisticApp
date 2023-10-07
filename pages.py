@@ -1,140 +1,143 @@
 from customwidgets import *
 from kivy.uix.floatlayout import FloatLayout
 
-
-data_dict = {}
+from config import *
 
 
 class WelcomePage(FloatLayout):
     def __init__(self):
-        global data_dict
-
-        data_dict = {}
         super().__init__()
 
-        self.welcome_label = Label(text="Добрый день",
-                                      pos_hint={'center_x': 0.5, 'center_y': 0.9},
+        self.title_label = Label(text="Добрый день",
+                                      pos_hint={'center_x': 0.5,
+                                                'center_y': 0.9},
                                       size_hint=(0.1, 0.05),
+                                      font_size=40,
+                                      bold=True,
+                                      halign="center")
+
+        self.text_label = Label(text="Пройдите наш опрос по \nвнеурочной деятельности\n[Текст такого содержания]",
+                                      pos_hint={'center_x': 0.5,
+                                                'center_y': 0.7},
+                                      size_hint=(0.4, 0.4),
                                       font_size=30)
-        self.add_widget(self.welcome_label)
+
+        self.btn_next = Button(text="Начать",
+                               pos_hint={'center_x': 0.5,
+                                         'center_y': 0.1},
+                               size_hint=(0.9, 0.1),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center",
+                               font_size=25)
+
+        self.add_widget(self.title_label)
+        self.add_widget(self.text_label)
+        self.add_widget(self.btn_next)
+
+    @staticmethod
+    def is_can_next():
+        return True
 
 
 class RegistrationPage(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.title_label = Label(text="Остановись, мама!",
-                                 pos_hint={'center_x': 0.5, 'center_y': 0.9},
-                                 size_hint=(0.1, 0.05),
-                                 font_size=30,
-                                 halign="center")
-
         self.gender_label = Label(text="Выберите пол:",
                                   pos_hint={'center_x': 0.5,
-                                            'center_y': 0.75},
-                                  halign="center")
+                                            'center_y': 0.9},
+                                  halign="center",
+                                  bold=True,
+                                  font_size=25)
 
-        self.gender_layout = GenderLayout(pos_hint={'center_x': 0.5, 'center_y': 0.67},
+        self.gender_layout = GenderLayout(pos_hint={'center_x': 0.45, 'center_y': 0.8},
                                           size_hint=(.6, .1))
 
         self.gender_not_label = Label(pos_hint={'center_x': 0.5,
-                                            'center_y': 0.65},
-                                  halign="center",
-                                color=[1, 0, 0, 1])
+                                                'center_y': 0.75},
+                                        halign="center",
+                                        color=[1, 0, 0, 1],
+                                        bold=True,
+                                        font_size=20)
 
-        self.age_label = Label(text="Выберите возраст:",
+        self.dropdown_class = DropDownClasses()
+        self.btn_class = Button(text="Выбрать\nкласс",
+                                pos_hint={'center_x': 0.5,
+                                          'center_y': 0.6},
+                                size_hint=(.3, .1),
+                                halign="center",
+                                background_color=(1, .4, .4, 1),
+                                background_normal="",
+                                font_size=25,
+                                bold=True)
+
+        self.btn_class.bind(on_release=self.dropdown_class.open)
+        self.dropdown_class.bind(on_select=lambda instance, x: setattr(self.btn_class, "text", x))
+
+        self.class_not_label = Label(pos_hint={'center_x': 0.5,
+                                            'center_y': 0.5},
+                                halign="center",
+                                color=[1, 0, 0, 1],
+                                bold=True,
+                                font_size=20)
+
+        self.btn_next = Button(text="Следущая страница",
                                pos_hint={'center_x': 0.5,
-                                         'center_y': 0.57},
-                               halign="center")
-
-        self.age_not_label = Label(pos_hint={'center_x': 0.5,
-                                            'center_y': 0.45},
-                                  halign="center",
-                                color=[1, 0, 0, 1])
-
-        self.age_input = NumberInput(type_input="age",
-                                     font_size=30,
-                                     size_hint=(.1, .06),
-                                     pos_hint={'center_x': 0.5, 'center_y': 0.5})
-
-        self.age_input.bind(text=self.age_input.press_keyboard)
-
-        self.telephone_label = Label(text="Укажите телефон:",
-                                     pos_hint={'center_x': 0.5,
-                                               'center_y': 0.4},
-                                     halign="center")
-        self.telephone_input = NumberInput(type_input="phone",
-                                           font_size=30,
-                                           size_hint=(.6, .07),
-                                           pos_hint={'center_x': 0.5, 'center_y': 0.32})
-
-        self.telephone_input.bind(text=self.telephone_input.press_keyboard)
+                                         'center_y': 0.1},
+                               size_hint=(0.9, 0.1),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center",
+                               font_size=25)
 
         self.add_widget(self.gender_layout)
         self.add_widget(self.gender_label)
         self.add_widget(self.gender_not_label)
 
-        self.add_widget(self.age_input)
-        self.add_widget(self.age_label)
-        self.add_widget(self.age_not_label)
-
-        self.add_widget(self.telephone_input)
-        self.add_widget(self.telephone_label)
-        self.add_widget(self.title_label)
+        self.add_widget(self.class_not_label)
+        self.add_widget(self.btn_class)
+        self.add_widget(self.btn_next)
 
     def is_can_next(self):
         gender = self.gender_layout.check_data()
-        age = self.age_input.check_data()
+        age = self.btn_class.text
+
+        if not age.isdigit():
+            self.class_not_label.text = "Выберите класс"
+
         if not gender:
             self.gender_not_label.text = "Вы не указали пол"
         else:
             self.gender_not_label.text = ""
-
-        if not age:
-            self.age_not_label.text = "Вы не указали возраст"
-        else:
-            self.age_not_label.text = ""
-
-        if gender and age:
-            self.get_data()
         
-        return gender and age
+        return gender and age.isdigit()
 
     def get_data(self):
         global data_dict
 
         if self.gender_layout.man_checkbox.active:
-            data_dict["gender"] = "Мужской пол"
+            data_dict["Gender"] = "Мужской пол"
         else:
-            data_dict["gender"] = "Женский пол"
+            data_dict["Gender"] = "Женский пол"
 
-        data_dict["age"] = self.age_input.text
-
-        if len(self.telephone_input.text) < 7:
-            data_dict["phone"] = None
-        else:
-            data_dict["phone"] = self.telephone_input.text
+        data_dict["Class"] = self.btn_class.text
 
 
 class InterestsPage(FloatLayout):
     def __init__(self):
         super().__init__()
 
-        self.choices_lst = ["русский язык", "литература", "родная литература",
-                            "математика", "история", "иностранный язык",
-                            "физика", "химия", "биология",
-                            "обществознание", "география", "физкультура",
-                            "информатика", "ОБЖ", "Астрономия", "Вероятность и статистика",
-                            "ОДНКНР", "Черчение", "Технология",
-                            "Музыка", "Основы экономики", "Основы финансовой грамотности",
-                            "МХК", "краеведение"]
-
         self.interesting_label = Label(text="Список предпочитаемых предметов",
                                        size_hint=(.1, .1),
                                        pos_hint={'center_x': 0.5, 'center_y': 0.95},
-                                       halign="center")
+                                       halign="center",
+                                       font_size=20,
+                                       bold=True)
 
-        self.interesting = MultiplyChoiceCheckBox(choices=self.choices_lst,
+        self.interesting = MultiplyChoiceCheckBox(choices=classes[7].keys(),
                         size_hint=(.75, .7),
                         pos_hint={'center_x': 0.4, 'center_y': 0.57})
 
@@ -143,16 +146,40 @@ class InterestsPage(FloatLayout):
                                            color=[1, 0, 0, 1],
                                            halign="center")
 
+        self.btn_next = Button(text="Следущая\nстраница",
+                               pos_hint={'center_x': 0.75,
+                                         'center_y': 0.1},
+                               size_hint=(0.4, 0.15),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center",
+                               font_size=25)
+
+        self.btn_back = Button(text="Предыдущая\nстраница",
+                               pos_hint={'center_x': 0.25,
+                                         'center_y': 0.1},
+                               size_hint=(0.4, 0.15),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center",
+                               font_size=25)
+
+        self.add_widget(self.btn_next)
+        self.add_widget(self.btn_back)
+
         self.add_widget(self.interesting)
         self.add_widget(self.interesting_label)
         self.add_widget(self.interesting_label_not)
 
     def is_can_next(self):
         global data_dict
+
         interesting = self.interesting.check_data()
         interest_lst = self.interesting.get_data()
 
-        data_dict["interests"] = interest_lst
+        data_dict["FavoriteSubjects"] = interest_lst
 
         if not interesting:
             self.interesting_label_not.text = "Выберите больше 0 и меньше 3"
@@ -162,62 +189,15 @@ class InterestsPage(FloatLayout):
         return interesting
 
 
-class FavoriteSectionPage(FloatLayout):
-    def __init__(self):
-        super().__init__()
-        self.favorite_section_lst = ["Производственное", "Научное", "Правовое",
-                                    "Предпринимательское", "Философское", "Художественное",
-                                    "Музыкальное", "Спортивное", "Военно-тактическое"]
-
-        self.favorite_section_label = Label(text="Список предпочитаемого творчества",
-                                       size_hint=(.1, .5),
-                                       pos_hint={'center_x': 0.5, 'center_y': 0.9},
-                                       halign="center")
-
-        self.favorite_section = MultiplyChoiceCheckBox(self.favorite_section_lst,
-                        size_hint=(.75, .5),
-                        pos_hint={'center_x': 0.4, 'center_y': 0.5})
-
-        self.favorite_section_label_not = Label(size_hint=(.1, .2),
-                                           pos_hint={'center_x': 0.5, 'center_y': 0.2},
-                                           color=[1, 0, 0, 1],
-                                           halign="center")
-
-        self.add_widget(self.favorite_section)
-        self.add_widget(self.favorite_section_label)
-        self.add_widget(self.favorite_section_label_not)
-
-    def is_can_next(self):
-        global data_dict
-        favorite = self.favorite_section.check_data()
-        favorite_section = self.favorite_section.get_data()
-
-        data_dict["favorite_sections"] = favorite_section
-
-        if not favorite:
-            self.favorite_section_label_not.text = "Выберите больше 0 и меньше 3"
-        else:
-            self.favorite_section_label_not.text = ""
-
-        return favorite
-
-
 class RestPage(FloatLayout):
     def __init__(self):
         super().__init__()
-        self.rest_lst = ["Спорт (активный отдых)",
-                        "Чтение книг (комиксов)",
-                        "Творчество (лепка, \nрисование, бисер и т.д.)",
-                        "Компьютерные игры",
-                        "Просмотр чего-либо (YouTube, \nфильмы, мультфильмы и т.д.)",
-                        "Лежание на диване"]
-
         self.rest_label = Label(text="Список предпочитаемого отдыха",
                                 size_hint=(.1, .5),
                                 pos_hint={'center_x': 0.55, 'center_y': 0.8},
                                 halign="center")
 
-        self.rest = MultiplyChoiceCheckBox(self.rest_lst,
+        self.rest_cb = MultiplyChoiceCheckBox(rest,
                         size_hint=(.7, .4),
                         pos_hint={'center_x': 0.4, 'center_y': 0.5})
 
@@ -226,13 +206,36 @@ class RestPage(FloatLayout):
                                     color=[1, 0, 0, 1],
                                     halign="center")
 
-        self.add_widget(self.rest)
+        self.btn_next = Button(text="Следущая\nстраница",
+                               pos_hint={'center_x': 0.75,
+                                         'center_y': 0.1},
+                               size_hint=(0.4, 0.15),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center",
+                               font_size=25)
+
+        self.btn_back = Button(text="Предыдущая\nстраница",
+                               pos_hint={'center_x': 0.25,
+                                         'center_y': 0.1},
+                               size_hint=(0.4, 0.15),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center",
+                               font_size=25)
+
+        self.add_widget(self.btn_next)
+        self.add_widget(self.btn_back)
+
+        self.add_widget(self.rest_cb)
         self.add_widget(self.rest_label)
         self.add_widget(self.rest_label_not)
 
     def is_can_next(self):
         global data_dict
-        data_dict["rests"] = self.rest.get_data()
+        data_dict["Rest"] = self.rest_cb.get_data()
 
         rest = self.rest.check_data()
 
@@ -247,16 +250,83 @@ class RestPage(FloatLayout):
 class ResultPage(FloatLayout):
     def __init__(self):
         global data_dict
+
         super().__init__()
 
         self.welcome_label = Label(text="Опрос пройден.\n Вот результат:",
                                    pos_hint={'center_x': 0.5, 'center_y': 0.9},
                                    size_hint=(0.1, 0.05),
                                    font_size=30)
-        rests = '\n'.join(data_dict['rests'])
-        interests = '\n'.join(data_dict['interests'])
-        favorite_section = '\n'.join(data_dict['favorite_sections'])
-        self.info_text = Label(text=f"Пол: {data_dict['gender']}\n\nВозраст: {data_dict['age']}\n\nТелефон: {data_dict['phone']}\n\n" +
-                               f"Интересы: {interests}\n\nЛюбимые секции: {favorite_section}\n\nОтдых: {rests}")
+        rests = '\n'.join(data_dict['Rest'])
+        interests = '\n'.join(data_dict['FavoriteSubjects'])
+        sections = '\n'.join(data_dict['Sections'])
+
+        self.info_text = Label(text=f"Пол: {data_dict['Gender']}\n\nВозраст: {data_dict['Class']}\n" +
+                               f"Интересы: {interests}\n\nОтдых: {rests}\n\n Секции: {sections}")
+
+        self.btn_next = Button(text="Завершить",
+                               pos_hint={'center_x': 0.5,
+                                         'center_y': 0.1},
+                               size_hint=(0.9, 0.1),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center",
+                               font_size=25)
+
         self.add_widget(self.welcome_label)
         self.add_widget(self.info_text)
+        self.add_widget(self.btn_next)
+
+
+class SectionPage(FloatLayout):
+    def __init__(self):
+        global data_dict
+        super().__init__()
+
+        self.label = Label(text="В городе Бийск есть кружки.\n Выберите те, которые посещаете",
+                                      pos_hint={'center_x': 0.5,
+                                                'center_y': 0.9},
+                                      size_hint=(0.1, 0.05),
+                                      font_size=20)
+        self.add_widget(self.label)
+
+        self.choice_lst = []
+        for subj_name in data_dict["FavoriteSubjects"]:
+            self.choice_lst += classes[int(data_dict["Class"])][subj_name]
+        self.choice_lst += ["Другое", "Ничего"]
+        self.cb = MultiplyChoiceCheckBox(self.choice_lst,
+                                         pos_hint={'center_x': 0.4,
+                                                   'center_y': 0.5},
+                                         size_hint=(0.6, 0.5))
+
+        self.btn_next = Button(text="Следущая\nстраница",
+                               pos_hint={'center_x': 0.75,
+                                         'center_y': 0.1},
+                               size_hint=(0.4, 0.15),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center",
+                               font_size=25)
+
+        self.btn_back = Button(text="Предыдущая\nстраница",
+                               pos_hint={'center_x': 0.25,
+                                         'center_y': 0.1},
+                               size_hint=(0.4, 0.15),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center",
+                               font_size=25)
+
+        self.add_widget(self.btn_next)
+        self.add_widget(self.btn_back)
+
+        self.add_widget(self.cb)
+
+    # @staticmethod
+    def is_can_next(self):
+        global data_dict
+        data_dict["Sections"] = self.cb.get_data()
+        return True
