@@ -62,7 +62,7 @@ class RegistrationPage(FloatLayout):
                                   font_size=25)
 
         self.gender_layout = GenderLayout(pos_hint={'center_x': 0.45, 'center_y': 0.82},
-                                          size_hint=(.8, .1))
+                                          size_hint=(1, .1))
 
         self.gender_not_label = Label(pos_hint={'center_x': 0.5,
                                                 'center_y': 0.7},
@@ -231,12 +231,12 @@ class RestPage(FloatLayout):
     def __init__(self):
         super().__init__()
         self.rest_label = Label(text="Список предпочитаемого отдыха",
-                                size_hint=(.1, .5),
+                                size_hint=(1, .5),
                                 pos_hint={'center_x': 0.55, 'center_y': 0.8},
                                 halign="center")
 
         self.rest_label.bind(size=self.update_font_size)
-        self.rest_label.scale = 0.1
+        self.rest_label.scale = 0.05
 
         self.rest_cb = MultiplyChoiceCheckBox(rest,
                         size_hint=(.7, .4),

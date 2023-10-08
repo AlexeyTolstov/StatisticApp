@@ -11,21 +11,32 @@ class GenderLayout(BoxLayout):
         super().__init__(**kwargs)
         self.orientation = "horizontal"
 
-        self.man_checkbox = CheckBox(group="gender")
+        self.man_checkbox = CheckBox(group="gender",
+                                     color=(1, 1, 1, 1))
         self.man_checkbox.label = Label(text="Мужской",
-                                        bold=True,
-                                        font_size=30)
+                                        bold=True)
         self.add_widget(self.man_checkbox)
         self.add_widget(self.man_checkbox.label)
         self.man_checkbox.bind(active=self.on_radiobutton)
 
         self.woman_checkbox = CheckBox(group="gender")
         self.woman_checkbox.label = Label(text="Женский",
-                                          bold=True,
-                                          font_size=30)
+                                          bold=True)
+
+        self.woman_checkbox.label.scale = 0.25
+        self.man_checkbox.label.scale = 0.25
+
+        self.woman_checkbox.label.bind(size=self.update_font_size)
+        self.man_checkbox.label.bind(size=self.update_font_size)
+
         self.add_widget(self.woman_checkbox)
         self.add_widget(self.woman_checkbox.label)
         self.woman_checkbox.bind(active=self.on_radiobutton)
+
+    @staticmethod
+    def update_font_size(instance, value):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
 
     @staticmethod
     def on_radiobutton(instance, value):
@@ -39,11 +50,12 @@ class DropDownClasses(DropDown):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.max_height = 300
-        self.container.spacing = 2
+        self.container.spacing = 3
+
         for i in range(1, 12):
             btn = Button(text=str(i),
                          size_hint_y=None,
-                         height=100,
+                         height=200,
                          background_color=(.9, .3, .3, 1),
                          background_normal="",
                          font_size=60)
