@@ -7,20 +7,17 @@ from config import *
 class WelcomePage(FloatLayout):
     def __init__(self):
         super().__init__()
-
         self.title_label = Label(text="Добрый день",
                                       pos_hint={'center_x': 0.5,
                                                 'center_y': 0.9},
                                       size_hint=(0.1, 0.05),
-                                      font_size=40,
                                       bold=True,
                                       halign="center")
 
         self.text_label = Label(text="Пройдите наш опрос по \nвнеурочной деятельности\n[Текст такого содержания]",
                                       pos_hint={'center_x': 0.5,
-                                                'center_y': 0.7},
-                                      size_hint=(0.4, 0.4),
-                                      font_size=30)
+                                                'center_y': 0.6},
+                                      size_hint=(0.5, 0.4))
 
         self.btn_next = Button(text="Начать",
                                pos_hint={'center_x': 0.5,
@@ -29,8 +26,15 @@ class WelcomePage(FloatLayout):
                                background_color=(1, .4, .4, 1),
                                background_normal="",
                                bold=True,
-                               halign="center",
-                               font_size=25)
+                               halign="center")
+
+        self.title_label.scale = 1
+        self.text_label.scale = 0.15
+        self.btn_next.scale = 0.1
+
+        self.btn_next.bind(size=self.update_font_size)
+        self.text_label.bind(size=self.update_font_size)
+        self.title_label.bind(size=self.update_font_size)
 
         self.add_widget(self.title_label)
         self.add_widget(self.text_label)
@@ -39,6 +43,11 @@ class WelcomePage(FloatLayout):
     @staticmethod
     def is_can_next():
         return True
+
+    @staticmethod
+    def update_font_size(instance, value):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
 
 
 class RegistrationPage(FloatLayout):
@@ -52,11 +61,11 @@ class RegistrationPage(FloatLayout):
                                   bold=True,
                                   font_size=25)
 
-        self.gender_layout = GenderLayout(pos_hint={'center_x': 0.45, 'center_y': 0.8},
-                                          size_hint=(.6, .1))
+        self.gender_layout = GenderLayout(pos_hint={'center_x': 0.45, 'center_y': 0.82},
+                                          size_hint=(.8, .1))
 
         self.gender_not_label = Label(pos_hint={'center_x': 0.5,
-                                                'center_y': 0.75},
+                                                'center_y': 0.7},
                                         halign="center",
                                         color=[1, 0, 0, 1],
                                         bold=True,
@@ -65,19 +74,18 @@ class RegistrationPage(FloatLayout):
         self.dropdown_class = DropDownClasses()
         self.btn_class = Button(text="Выбрать\nкласс",
                                 pos_hint={'center_x': 0.5,
-                                          'center_y': 0.6},
-                                size_hint=(.3, .1),
+                                          'center_y': 0.55},
+                                size_hint=(.3, .15),
                                 halign="center",
                                 background_color=(1, .4, .4, 1),
                                 background_normal="",
-                                font_size=25,
                                 bold=True)
 
         self.btn_class.bind(on_release=self.dropdown_class.open)
         self.dropdown_class.bind(on_select=lambda instance, x: setattr(self.btn_class, "text", x))
 
         self.class_not_label = Label(pos_hint={'center_x': 0.5,
-                                            'center_y': 0.5},
+                                            'center_y': 0.44},
                                 halign="center",
                                 color=[1, 0, 0, 1],
                                 bold=True,
@@ -90,8 +98,19 @@ class RegistrationPage(FloatLayout):
                                background_color=(1, .4, .4, 1),
                                background_normal="",
                                bold=True,
-                               halign="center",
-                               font_size=25)
+                               halign="center")
+
+        self.btn_class.scale = 0.2
+        self.btn_next.scale = 0.07
+        self.gender_label.scale = 0.07
+        self.class_not_label.scale = 0.05
+        self.gender_not_label.scale = 0.05
+
+        self.btn_class.bind(size=self.update_font_size)
+        self.btn_next.bind(size=self.update_font_size)
+        self.gender_label.bind(size=self.update_font_size)
+        self.class_not_label.bind(size=self.update_font_size)
+        self.gender_not_label.bind(size=self.update_font_size)
 
         self.add_widget(self.gender_layout)
         self.add_widget(self.gender_label)
@@ -125,16 +144,20 @@ class RegistrationPage(FloatLayout):
 
         data_dict["Class"] = self.btn_class.text
 
+    @staticmethod
+    def update_font_size(instance, value):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
+
 
 class InterestsPage(FloatLayout):
     def __init__(self):
         super().__init__()
 
         self.interesting_label = Label(text="Список предпочитаемых предметов",
-                                       size_hint=(.1, .1),
+                                       size_hint=(1, .1),
                                        pos_hint={'center_x': 0.5, 'center_y': 0.95},
                                        halign="center",
-                                       font_size=20,
                                        bold=True)
 
         self.interesting = MultiplyChoiceCheckBox(choices=classes[7].keys(),
@@ -146,6 +169,12 @@ class InterestsPage(FloatLayout):
                                            color=[1, 0, 0, 1],
                                            halign="center")
 
+        self.interesting_label.bind(size=self.update_font_size)
+        self.interesting_label.scale = 0.05
+
+        self.interesting_label_not.bind(size=self.update_font_size)
+        self.interesting_label_not.scale = 0.05
+
         self.btn_next = Button(text="Следущая\nстраница",
                                pos_hint={'center_x': 0.75,
                                          'center_y': 0.1},
@@ -153,8 +182,10 @@ class InterestsPage(FloatLayout):
                                background_color=(1, .4, .4, 1),
                                background_normal="",
                                bold=True,
-                               halign="center",
-                               font_size=25)
+                               halign="center")
+
+        self.btn_next.bind(size=self.update_font_size)
+        self.btn_next.scale = 0.1
 
         self.btn_back = Button(text="Предыдущая\nстраница",
                                pos_hint={'center_x': 0.25,
@@ -163,8 +194,10 @@ class InterestsPage(FloatLayout):
                                background_color=(1, .4, .4, 1),
                                background_normal="",
                                bold=True,
-                               halign="center",
-                               font_size=25)
+                               halign="center")
+
+        self.btn_back.bind(size=self.update_font_size)
+        self.btn_back.scale = 0.1
 
         self.add_widget(self.btn_next)
         self.add_widget(self.btn_back)
@@ -188,6 +221,11 @@ class InterestsPage(FloatLayout):
 
         return interesting
 
+    @staticmethod
+    def update_font_size(instance, value):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
+
 
 class RestPage(FloatLayout):
     def __init__(self):
@@ -197,6 +235,9 @@ class RestPage(FloatLayout):
                                 pos_hint={'center_x': 0.55, 'center_y': 0.8},
                                 halign="center")
 
+        self.rest_label.bind(size=self.update_font_size)
+        self.rest_label.scale = 0.1
+
         self.rest_cb = MultiplyChoiceCheckBox(rest,
                         size_hint=(.7, .4),
                         pos_hint={'center_x': 0.4, 'center_y': 0.5})
@@ -205,6 +246,9 @@ class RestPage(FloatLayout):
                                     pos_hint={'center_x': 0.5, 'center_y': 0.25},
                                     color=[1, 0, 0, 1],
                                     halign="center")
+
+        self.rest_label_not.bind(size=self.update_font_size)
+        self.rest_label_not.scale = 0.05
 
         self.btn_next = Button(text="Следущая\nстраница",
                                pos_hint={'center_x': 0.75,
@@ -216,6 +260,9 @@ class RestPage(FloatLayout):
                                halign="center",
                                font_size=25)
 
+        self.btn_next.bind(size=self.update_font_size)
+        self.btn_next.scale = 0.1
+
         self.btn_back = Button(text="Предыдущая\nстраница",
                                pos_hint={'center_x': 0.25,
                                          'center_y': 0.1},
@@ -223,8 +270,10 @@ class RestPage(FloatLayout):
                                background_color=(1, .4, .4, 1),
                                background_normal="",
                                bold=True,
-                               halign="center",
-                               font_size=25)
+                               halign="center")
+
+        self.btn_back.bind(size=self.update_font_size)
+        self.btn_back.scale = 0.1
 
         self.add_widget(self.btn_next)
         self.add_widget(self.btn_back)
@@ -245,6 +294,11 @@ class RestPage(FloatLayout):
             self.rest_label_not.text = ""
 
         return rest
+
+    @staticmethod
+    def update_font_size(instance, value):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
 
 
 class ResultPage(FloatLayout):
@@ -277,6 +331,11 @@ class ResultPage(FloatLayout):
         self.add_widget(self.welcome_label)
         self.add_widget(self.info_text)
         self.add_widget(self.btn_next)
+
+    @staticmethod
+    def update_font_size(instance, value):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
 
 
 class SectionPage(FloatLayout):

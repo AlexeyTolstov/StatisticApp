@@ -14,7 +14,7 @@ class GenderLayout(BoxLayout):
         self.man_checkbox = CheckBox(group="gender")
         self.man_checkbox.label = Label(text="Мужской",
                                         bold=True,
-                                        font_size=20)
+                                        font_size=30)
         self.add_widget(self.man_checkbox)
         self.add_widget(self.man_checkbox.label)
         self.man_checkbox.bind(active=self.on_radiobutton)
@@ -22,7 +22,7 @@ class GenderLayout(BoxLayout):
         self.woman_checkbox = CheckBox(group="gender")
         self.woman_checkbox.label = Label(text="Женский",
                                           bold=True,
-                                          font_size=20)
+                                          font_size=30)
         self.add_widget(self.woman_checkbox)
         self.add_widget(self.woman_checkbox.label)
         self.woman_checkbox.bind(active=self.on_radiobutton)
@@ -43,9 +43,10 @@ class DropDownClasses(DropDown):
         for i in range(1, 12):
             btn = Button(text=str(i),
                          size_hint_y=None,
-                         height=60,
+                         height=100,
                          background_color=(.9, .3, .3, 1),
-                         background_normal="")
+                         background_normal="",
+                         font_size=60)
 
             btn.bind(on_release=lambda btn_: self.select(btn_.text))
             self.add_widget(btn)
@@ -99,7 +100,7 @@ class MultiplyChoiceCheckBox(BoxLayout):
         super().__init__(**kwargs)
         self.orientation = "vertical"
 
-        self.height = 70
+        self.height = 10 * len(choices)
         self.width = 250
 
         self.lst = []
@@ -108,6 +109,9 @@ class MultiplyChoiceCheckBox(BoxLayout):
             layout = BoxLayout(orientation="horizontal")
             layout.cb = CheckBox()
             layout.cb.label = Label(text=str(choice))
+
+            layout.cb.label.bind(size=self.update_font_size)
+            layout.cb.label.scale = 0.1
 
             layout.add_widget(layout.cb)
             layout.add_widget(layout.cb.label)
@@ -130,3 +134,8 @@ class MultiplyChoiceCheckBox(BoxLayout):
                 lst.append(i.label.text)
 
         return lst
+
+    @staticmethod
+    def update_font_size(instance, value):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
