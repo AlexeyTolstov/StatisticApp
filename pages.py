@@ -4,6 +4,24 @@ from kivy.uix.floatlayout import FloatLayout
 from config import *
 
 
+def switch_new_line(text, max_line_length):
+    words = text.split()
+    lines = []
+    current_line = words[0]
+
+    for word in words[1:]:
+        if len(current_line + ' ' + word) <= max_line_length:
+            current_line += ' ' + word
+        else:
+            lines.append(current_line)
+            current_line = word
+
+    if current_line:
+        lines.append(current_line)
+
+    return '\n'.join(lines)
+
+
 class WelcomePage(FloatLayout):
     def __init__(self):
         super().__init__()
@@ -14,7 +32,8 @@ class WelcomePage(FloatLayout):
                                       bold=True,
                                       halign="center")
 
-        self.text_label = Label(text="Пройдите наш опрос по \nвнеурочной деятельности\n[Текст такого содержания]",
+        text = "Пройдите наш опрос по внеурочной деятельности [Текст такого содержания]"
+        self.text_label = Label(text=switch_new_line(text, 20),
                                       pos_hint={'center_x': 0.5,
                                                 'center_y': 0.6},
                                       size_hint=(0.5, 0.4))
@@ -45,7 +64,7 @@ class WelcomePage(FloatLayout):
         return True
 
     @staticmethod
-    def update_font_size(instance, value):
+    def update_font_size(instance, _):
         new_font_size = instance.width * instance.scale
         instance.font_size = new_font_size
 
@@ -145,7 +164,7 @@ class RegistrationPage(FloatLayout):
         data_dict["Class"] = self.btn_class.text
 
     @staticmethod
-    def update_font_size(instance, value):
+    def update_font_size(instance, _):
         new_font_size = instance.width * instance.scale
         instance.font_size = new_font_size
 
@@ -164,16 +183,10 @@ class InterestsPage(FloatLayout):
                         size_hint=(.75, .7),
                         pos_hint={'center_x': 0.4, 'center_y': 0.57})
 
-        self.interesting_label_not = Label(size_hint=(.1, .2),
-                                           pos_hint={'center_x': 0.5, 'center_y': 0.18},
+        self.interesting_label_not = Label(size_hint=(.5, .2),
+                                           pos_hint={'center_x': 0.5, 'center_y': 0.19},
                                            color=[1, 0, 0, 1],
                                            halign="center")
-
-        self.interesting_label.bind(size=self.update_font_size)
-        self.interesting_label.scale = 0.05
-
-        self.interesting_label_not.bind(size=self.update_font_size)
-        self.interesting_label_not.scale = 0.05
 
         self.btn_next = Button(text="Следущая\nстраница",
                                pos_hint={'center_x': 0.75,
@@ -184,9 +197,6 @@ class InterestsPage(FloatLayout):
                                bold=True,
                                halign="center")
 
-        self.btn_next.bind(size=self.update_font_size)
-        self.btn_next.scale = 0.1
-
         self.btn_back = Button(text="Предыдущая\nстраница",
                                pos_hint={'center_x': 0.25,
                                          'center_y': 0.1},
@@ -196,8 +206,15 @@ class InterestsPage(FloatLayout):
                                bold=True,
                                halign="center")
 
+        self.btn_back.scale = 0.15
+        self.btn_next.scale = 0.15
+        self.interesting_label.scale = 0.05
+        self.interesting_label_not.scale = 0.1
+
         self.btn_back.bind(size=self.update_font_size)
-        self.btn_back.scale = 0.1
+        self.btn_next.bind(size=self.update_font_size)
+        self.interesting_label.bind(size=self.update_font_size)
+        self.interesting_label_not.bind(size=self.update_font_size)
 
         self.add_widget(self.btn_next)
         self.add_widget(self.btn_back)
@@ -222,7 +239,7 @@ class InterestsPage(FloatLayout):
         return interesting
 
     @staticmethod
-    def update_font_size(instance, value):
+    def update_font_size(instance, _):
         new_font_size = instance.width * instance.scale
         instance.font_size = new_font_size
 
@@ -233,22 +250,18 @@ class RestPage(FloatLayout):
         self.rest_label = Label(text="Список предпочитаемого отдыха",
                                 size_hint=(1, .5),
                                 pos_hint={'center_x': 0.55, 'center_y': 0.8},
-                                halign="center")
-
-        self.rest_label.bind(size=self.update_font_size)
-        self.rest_label.scale = 0.05
+                                halign="center",
+                                bold=True)
 
         self.rest_cb = MultiplyChoiceCheckBox(rest,
                         size_hint=(.7, .4),
                         pos_hint={'center_x': 0.4, 'center_y': 0.5})
 
-        self.rest_label_not = Label(size_hint=(.1, .2),
+        self.rest_label_not = Label(size_hint=(.5, .2),
                                     pos_hint={'center_x': 0.5, 'center_y': 0.25},
                                     color=[1, 0, 0, 1],
-                                    halign="center")
-
-        self.rest_label_not.bind(size=self.update_font_size)
-        self.rest_label_not.scale = 0.05
+                                    halign="center",
+                                    bold=True)
 
         self.btn_next = Button(text="Следущая\nстраница",
                                pos_hint={'center_x': 0.75,
@@ -257,11 +270,7 @@ class RestPage(FloatLayout):
                                background_color=(1, .4, .4, 1),
                                background_normal="",
                                bold=True,
-                               halign="center",
-                               font_size=25)
-
-        self.btn_next.bind(size=self.update_font_size)
-        self.btn_next.scale = 0.1
+                               halign="center")
 
         self.btn_back = Button(text="Предыдущая\nстраница",
                                pos_hint={'center_x': 0.25,
@@ -272,8 +281,15 @@ class RestPage(FloatLayout):
                                bold=True,
                                halign="center")
 
+        self.rest_label_not.scale = 0.1
+        self.rest_label.scale = 0.05
+        self.btn_next.scale = 0.15
+        self.btn_back.scale = 0.15
+
+        self.rest_label.bind(size=self.update_font_size)
+        self.rest_label_not.bind(size=self.update_font_size)
+        self.btn_next.bind(size=self.update_font_size)
         self.btn_back.bind(size=self.update_font_size)
-        self.btn_back.scale = 0.1
 
         self.add_widget(self.btn_next)
         self.add_widget(self.btn_back)
@@ -284,56 +300,17 @@ class RestPage(FloatLayout):
 
     def is_can_next(self):
         global data_dict
-        data_dict["Rest"] = self.rest_cb.get_data()
+        data_dict["Rests"] = self.rest_cb.get_data()
 
-        rest = self.rest.check_data()
-
-        if not rest:
+        if not data_dict["Rests"]:
             self.rest_label_not.text = "Выберите больше 0 и меньше 3"
         else:
             self.rest_label_not.text = ""
 
-        return rest
+        return bool(data_dict["Rests"])
 
     @staticmethod
-    def update_font_size(instance, value):
-        new_font_size = instance.width * instance.scale
-        instance.font_size = new_font_size
-
-
-class ResultPage(FloatLayout):
-    def __init__(self):
-        global data_dict
-
-        super().__init__()
-
-        self.welcome_label = Label(text="Опрос пройден.\n Вот результат:",
-                                   pos_hint={'center_x': 0.5, 'center_y': 0.9},
-                                   size_hint=(0.1, 0.05),
-                                   font_size=30)
-        rests = '\n'.join(data_dict['Rest'])
-        interests = '\n'.join(data_dict['FavoriteSubjects'])
-        sections = '\n'.join(data_dict['Sections'])
-
-        self.info_text = Label(text=f"Пол: {data_dict['Gender']}\n\nВозраст: {data_dict['Class']}\n" +
-                               f"Интересы: {interests}\n\nОтдых: {rests}\n\n Секции: {sections}")
-
-        self.btn_next = Button(text="Завершить",
-                               pos_hint={'center_x': 0.5,
-                                         'center_y': 0.1},
-                               size_hint=(0.9, 0.1),
-                               background_color=(1, .4, .4, 1),
-                               background_normal="",
-                               bold=True,
-                               halign="center",
-                               font_size=25)
-
-        self.add_widget(self.welcome_label)
-        self.add_widget(self.info_text)
-        self.add_widget(self.btn_next)
-
-    @staticmethod
-    def update_font_size(instance, value):
+    def update_font_size(instance, _):
         new_font_size = instance.width * instance.scale
         instance.font_size = new_font_size
 
@@ -346,8 +323,8 @@ class SectionPage(FloatLayout):
         self.label = Label(text="В городе Бийск есть кружки.\n Выберите те, которые посещаете",
                                       pos_hint={'center_x': 0.5,
                                                 'center_y': 0.9},
-                                      size_hint=(0.1, 0.05),
-                                      font_size=20)
+                                      size_hint=(0.8, 0.05),
+                                      bold=True)
         self.add_widget(self.label)
 
         self.choice_lst = []
@@ -366,8 +343,7 @@ class SectionPage(FloatLayout):
                                background_color=(1, .4, .4, 1),
                                background_normal="",
                                bold=True,
-                               halign="center",
-                               font_size=25)
+                               halign="center")
 
         self.btn_back = Button(text="Предыдущая\nстраница",
                                pos_hint={'center_x': 0.25,
@@ -376,16 +352,293 @@ class SectionPage(FloatLayout):
                                background_color=(1, .4, .4, 1),
                                background_normal="",
                                bold=True,
-                               halign="center",
-                               font_size=25)
+                               halign="center")
+
+        self.label_section_not = Label(text="")
+
+        self.btn_back.scale = 0.15
+        self.btn_next.scale = 0.15
+        self.label.scale = 0.07
+        self.label_section_not.scale = 0.1
+
+        self.btn_next.bind(size=self.update_font_size)
+        self.btn_back.bind(size=self.update_font_size)
+        self.label.bind(size=self.update_font_size)
+        self.label_section_not.bind(size=self.update_font_size)
 
         self.add_widget(self.btn_next)
         self.add_widget(self.btn_back)
 
         self.add_widget(self.cb)
 
-    # @staticmethod
+    @staticmethod
+    def update_font_size(instance, _):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
+
     def is_can_next(self):
         global data_dict
         data_dict["Sections"] = self.cb.get_data()
+
+        if len(data_dict["Sections"]) != 1 and "Ничего" in data_dict["Sections"]:
+            pass
+
+        if not data_dict["Sections"]:
+            data_dict["Sections"] = ["Ничего"]
+        return bool(data_dict["Sections"])
+
+    def update(self):
+        self.remove_widget(self.cb)
+        self.choice_lst = []
+        for subj_name in data_dict["FavoriteSubjects"]:
+            self.choice_lst += classes[int(data_dict["Class"])][subj_name]
+        self.choice_lst += ["Другое", "Ничего"]
+        self.cb = MultiplyChoiceCheckBox(self.choice_lst,
+                                         pos_hint={'center_x': 0.4,
+                                                   'center_y': 0.5},
+                                         size_hint=(0.6, 0.5))
+        self.add_widget(self.cb)
+
+
+class TelephonePage(FloatLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.is_opened_kb = False
+        self.label = Label(text="Укажите телефон",
+                           pos_hint={'center_x': 0.5,
+                                     'center_y': 0.9},
+                           size_hint=(1, 0.3),
+                           bold=True)
+
+        self.telephone_label = Button(text="",  # +7 (XXX) XXX-XX-XX
+                                     pos_hint={'center_x': 0.5,
+                                               'center_y': 0.5},
+                                     size_hint=(.7, 0.1),
+                                     bold=True,
+                                     background_normal="",
+                                     background_down="",
+                                     background_color=(1, .4, .4, 1))
+
+        self.telephone_label.bind(on_press=self.open_keyboard)
+        self.number_keyboard = NumberKeyboard(self.label,
+                                              pos_hint={'center_x': 0.5,
+                                                        'center_y': 0.2},
+                                              size_hint=(1, 0.4))
+
+        self.btn_next = Button(text="Следущая\nстраница",
+                               pos_hint={'center_x': 0.75,
+                                         'center_y': 0.1},
+                               size_hint=(0.4, 0.15),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center")
+
+        self.btn_back = Button(text="Предыдущая\nстраница",
+                               pos_hint={'center_x': 0.25,
+                                         'center_y': 0.1},
+                               size_hint=(0.4, 0.15),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center")
+
+        self.btn_back.scale = 0.15
+        self.btn_next.scale = 0.15
+        self.telephone_label.scale = 0.1
+        self.label.scale = 0.1
+
+        self.number_keyboard.btn_0.scale = \
+        self.number_keyboard.btn_1.scale = \
+        self.number_keyboard.btn_2.scale = \
+        self.number_keyboard.btn_3.scale = \
+        self.number_keyboard.btn_4.scale = \
+        self.number_keyboard.btn_5.scale = \
+        self.number_keyboard.btn_6.scale = \
+        self.number_keyboard.btn_7.scale = \
+        self.number_keyboard.btn_8.scale = \
+        self.number_keyboard.btn_9.scale = \
+        self.number_keyboard.btn_delete.scale = \
+        self.number_keyboard.btn_enter.scale = 0.3
+
+        self.btn_next.bind(size=self.update_font_size)
+        self.btn_back.bind(size=self.update_font_size)
+        self.telephone_label.bind(size=self.update_font_size)
+        self.label.bind(size=self.update_font_size)
+
+        self.add_widget(self.btn_next)
+        self.add_widget(self.btn_back)
+
+        self.number_keyboard.btn_1.bind(on_press=self.press_number, size=self.update_font_size)
+        self.number_keyboard.btn_2.bind(on_press=self.press_number, size=self.update_font_size)
+        self.number_keyboard.btn_3.bind(on_press=self.press_number, size=self.update_font_size)
+        self.number_keyboard.btn_4.bind(on_press=self.press_number, size=self.update_font_size)
+        self.number_keyboard.btn_5.bind(on_press=self.press_number, size=self.update_font_size)
+        self.number_keyboard.btn_6.bind(on_press=self.press_number, size=self.update_font_size)
+        self.number_keyboard.btn_7.bind(on_press=self.press_number, size=self.update_font_size)
+        self.number_keyboard.btn_8.bind(on_press=self.press_number, size=self.update_font_size)
+        self.number_keyboard.btn_9.bind(on_press=self.press_number, size=self.update_font_size)
+        self.number_keyboard.btn_0.bind(on_press=self.press_number, size=self.update_font_size)
+        self.number_keyboard.btn_delete.bind(on_press=self.delete)
+
+        self.number_keyboard.btn_enter.bind(on_press=self.enter)
+        self.add_widget(self.label)
+        self.add_widget(self.telephone_label)
+
+    @staticmethod
+    def update_font_size(instance, _):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
+
+    def open_keyboard(self, _):
+        if not self.is_opened_kb:
+            self.add_widget(self.number_keyboard)
+            self.remove_widget(self.btn_next)
+            self.remove_widget(self.btn_back)
+        else:
+            self.remove_widget(self.number_keyboard)
+            self.add_widget(self.btn_next)
+            self.add_widget(self.btn_back)
+
+        self.is_opened_kb = not self.is_opened_kb
+
+    def press_number(self, instance):
+        if self.is_opened_kb:
+            self.telephone_label.text += instance.text
+
+    def delete(self, _):
+        if len(self.telephone_label.text) > 0:
+            self.telephone_label.text = self.telephone_label.text[:-1]
+
+    def enter(self, _):
+        if self.is_opened_kb:
+            self.is_opened_kb = False
+
+            self.remove_widget(self.number_keyboard)
+            self.add_widget(self.btn_next)
+            self.add_widget(self.btn_back)
+
+    def is_can_next(self):
+        print(self.telephone_label.text)
         return True
+
+
+class ResultPage(FloatLayout):
+    def __init__(self):
+        super().__init__()
+
+        self.welcome_label = Label(text="Опрос пройден.\n Вот результат:",
+                                   pos_hint={'center_x': 0.5, 'center_y': 0.9},
+                                   size_hint=(0.1, 0.05),
+                                   font_size=30)
+
+        self.info_text = Label(text=f"Пол: {data_dict['Gender']}\n\nВозраст: {data_dict['Class']}\n" +
+                               f"Интересы: {data_dict['FavoriteSubjects']}\n\nОтдых: {data_dict['Rests']}\n\n Секции: {data_dict['Sections']}")
+
+        self.btn_next = Button(text="Завершить",
+                               pos_hint={'center_x': 0.5,
+                                         'center_y': 0.1},
+                               size_hint=(0.9, 0.1),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center",
+                               font_size=25)
+
+        self.add_widget(self.welcome_label)
+        self.add_widget(self.info_text)
+        self.add_widget(self.btn_next)
+
+    @staticmethod
+    def update_font_size(instance, _):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
+
+    def update(self):
+        self.info_text.text = f"Пол: {data_dict['Gender']}\n\nВозраст: {data_dict['Class']}\n" + \
+                                    f"Интересы: {data_dict['FavoriteSubjects']}\n\nОтдых: {data_dict['Rests']}\n\n Секции: {data_dict['Sections']}"
+
+
+class AboutPage(FloatLayout):
+    def __init__(self):
+        super().__init__()
+        self.text_label = Label(text="",
+                                      pos_hint={'center_x': 0.5,
+                                                'center_y': 0.6},
+                                      size_hint=(0.5, 0.4))
+
+        self.btn_next = Button(text="Дальше",
+                               pos_hint={'center_x': 0.5,
+                                         'center_y': 0.1},
+                               size_hint=(0.9, 0.1),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center")
+
+        self.text_label.scale = 0.15
+        self.btn_next.scale = 0.1
+
+        self.btn_next.bind(size=self.update_font_size)
+        self.text_label.bind(size=self.update_font_size)
+
+        self.add_widget(self.text_label)
+        self.add_widget(self.btn_next)
+
+    @staticmethod
+    def is_can_next():
+        return True
+
+    @staticmethod
+    def update_font_size(instance, _):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
+
+    def update(self):
+        global data_dict
+
+        if len(data_dict["Sections"]) == 0 or data_dict["Sections"][0] == "Другое":
+            text = "В вашем городе есть кружки вам по интересам, вы можете записаться на них"
+        elif 0 < len(data_dict["Sections"]) < 3:
+            text = "У вас все хорошо"
+        else:
+            text = "А тебе нормально столько кружков"
+
+        self.text_label.text = switch_new_line(text, 20) + "\n" + switch_new_line("На следущей странице вы можете указать телефон родителя, чтобы мы рассказали о ваших результатах", 25)
+
+
+class CompletionPage(FloatLayout):
+    def __init__(self):
+        super().__init__()
+        text = "Спасибо за прохождение опроса"
+        self.text_label = Label(text=switch_new_line(text, 20),
+                                      pos_hint={'center_x': 0.5,
+                                                'center_y': 0.6},
+                                      size_hint=(0.5, 0.4))
+
+        self.btn_next = Button(text="Завершить",
+                               pos_hint={'center_x': 0.5,
+                                         'center_y': 0.1},
+                               size_hint=(0.9, 0.1),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center")
+
+        self.text_label.scale = 0.15
+        self.btn_next.scale = 0.1
+
+        self.btn_next.bind(size=self.update_font_size)
+        self.text_label.bind(size=self.update_font_size)
+
+        self.add_widget(self.text_label)
+        self.add_widget(self.btn_next)
+
+    @staticmethod
+    def is_can_next():
+        return True
+
+    @staticmethod
+    def update_font_size(instance, _):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size

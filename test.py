@@ -1,18 +1,24 @@
 from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.boxlayout import BoxLayout
+from kivy.core.window import Window
 
-class ResizableFontLabelApp(App):
+from pages import *
+
+
+Window.size = (360, 640)
+Window.clearcolor = (.7, .5, .9, 1)
+
+
+class MyApp(App):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        btn = Button(text="hello",
+                     font_size="50sp")
+        self.main_layout = FloatLayout()
+        self.main_layout.add_widget(btn)
+
     def build(self):
-        layout = BoxLayout(orientation='vertical')
-        label = Label(text='Привет, мир!', font_size='20sp')
-        layout.add_widget(label)
-        label.bind(size=self.update_font_size)
-        return layout
+        return self.main_layout
 
-    def update_font_size(self, instance, value):
-        new_font_size = 0.15 * instance.width
-        instance.font_size = new_font_size
 
-if __name__ == '__main__':
-    ResizableFontLabelApp().run()
+if __name__ == "__main__":
+    MyApp().run()

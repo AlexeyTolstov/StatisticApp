@@ -1,4 +1,9 @@
-data_dict = {}
+data_dict = {"Gender": None,
+"Class": None,
+"PhoneNumber": None,
+"FavoriteSubjects": [],
+"Rests": [],
+"Sections": []}
 
 """
 "Gender"
@@ -50,3 +55,5 @@ classes = {1: None,
            9: None,
            10: None,
            11: None}
+
+btn_color = (.9, .3, .3, 1)

@@ -49,7 +49,7 @@ class GenderLayout(BoxLayout):
 class DropDownClasses(DropDown):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.max_height = 300
+        self.max_height = 500
         self.container.spacing = 3
 
         for i in range(1, 12):
@@ -68,43 +68,100 @@ class NumberKeyboard(BoxLayout):
     def __init__(self, label, **kwargs):
         super().__init__(**kwargs)
         self.orientation = "vertical"
+        self.spacing = 3
+        self.padding = 3
 
-        row1 = BoxLayout(orientation="horizontal")
-        self.btn_1 = Button(text="1")
+        row1 = BoxLayout(orientation="horizontal", spacing=3)
+        row2 = BoxLayout(orientation="horizontal", spacing=3)
+        row3 = BoxLayout(orientation="horizontal", spacing=3)
+        row4 = BoxLayout(orientation="horizontal", spacing=3)
+
+        self.btn_1 = Button(text="1",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_2 = Button(text="2",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_3 = Button(text="3",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_4 = Button(text="4",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_5 = Button(text="5",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_6 = Button(text="6",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_7 = Button(text="7",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_8 = Button(text="8",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_9 = Button(text="9",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_delete = Button(text="DEL",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_0 = Button(text="0",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_enter = Button(text="OK",
+                            background_normal="",
+                            background_color=(.9, .3, .3, 1))
+
+        self.btn_0.bind(size=self.update_font_size)
+        self.btn_1.bind(size=self.update_font_size)
+        self.btn_2.bind(size=self.update_font_size)
+        self.btn_3.bind(size=self.update_font_size)
+        self.btn_4.bind(size=self.update_font_size)
+        self.btn_5.bind(size=self.update_font_size)
+        self.btn_6.bind(size=self.update_font_size)
+        self.btn_7.bind(size=self.update_font_size)
+        self.btn_8.bind(size=self.update_font_size)
+        self.btn_9.bind(size=self.update_font_size)
+        self.btn_delete.bind(size=self.update_font_size)
+        self.btn_enter.bind(size=self.update_font_size)
+
         row1.add_widget(self.btn_1)
-        self.btn_2 = Button(text="2")
         row1.add_widget(self.btn_2)
-        self.btn_3 = Button(text="3")
         row1.add_widget(self.btn_3)
 
-        row2 = BoxLayout(orientation="horizontal")
-        self.btn_4 = Button(text="4")
         row2.add_widget(self.btn_4)
-        self.btn_5 = Button(text="5")
         row2.add_widget(self.btn_5)
-        self.btn_6 = Button(text="6")
         row2.add_widget(self.btn_6)
 
-        row3 = BoxLayout(orientation="horizontal")
-        self.btn_7 = Button(text="7")
         row3.add_widget(self.btn_7)
-        self.btn_8 = Button(text="8")
         row3.add_widget(self.btn_8)
-        self.btn_9 = Button(text="9")
         row3.add_widget(self.btn_9)
 
-        row4 = BoxLayout(orientation="horizontal")
-        self.btn_enter = Button(text="_/")
-        row4.add_widget(self.btn_enter)
-        self.btn_0 = Button(text="0")
-        row4.add_widget(self.btn_0)
-        self.btn_delete = Button(text="DEL")
         row4.add_widget(self.btn_delete)
+        row4.add_widget(self.btn_0)
+        row4.add_widget(self.btn_enter)
 
         self.add_widget(row1)
         self.add_widget(row2)
         self.add_widget(row3)
         self.add_widget(row4)
+
+    @staticmethod
+    def update_font_size(instance, value):
+        new_font_size = instance.width * 0.2
+        instance.font_size = new_font_size
 
 
 class MultiplyChoiceCheckBox(BoxLayout):
@@ -123,7 +180,7 @@ class MultiplyChoiceCheckBox(BoxLayout):
             layout.cb.label = Label(text=str(choice))
 
             layout.cb.label.bind(size=self.update_font_size)
-            layout.cb.label.scale = 0.1
+            layout.cb.label.scale = 0.13
 
             layout.add_widget(layout.cb)
             layout.add_widget(layout.cb.label)

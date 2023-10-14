@@ -14,7 +14,12 @@ class MyApp(App):
         self.layouts_lst = [WelcomePage(),
                             RegistrationPage(),
                             InterestsPage(),
-                            RestPage()]
+                            RestPage(),
+                            SectionPage(),
+                            AboutPage(),
+                            TelephonePage(),
+                            # ResultPage(),
+                            CompletionPage()]
 
         self.opened_page_ind = 0
         self.opened_page = self.layouts_lst[self.opened_page_ind]
@@ -61,19 +66,22 @@ class MyApp(App):
             self.opened_page.get_data()
         except AttributeError:
             pass
-        if res:
-            if self.opened_page_ind == 3:
-                self.layouts_lst.append(SectionPage())
-            if self.opened_page_ind == 4:
-                self.layouts_lst.append(ResultPage())
 
+        if res:
             self.main_layout.remove_widget(self.opened_page)
             self.opened_page_ind = (self.opened_page_ind + 1)
             self.opened_page = self.layouts_lst[self.opened_page_ind]
+
+            try:
+                self.opened_page.update()
+            except AttributeError:
+                pass
+
             self.main_layout.add_widget(self.opened_page)
 
             try:
                 self.opened_page.btn_next.bind(on_press=self.next_page)
+                print(self.opened_page)
             except AttributeError:
                 pass
 
