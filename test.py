@@ -1,24 +1,21 @@
-from kivy.app import App
-from kivy.core.window import Window
+def switch_new_line(text, max_line_length):
+    lines = []
+    current_line = ""
 
-from pages import *
+    for line in text.split("\n"):
+        for word in line.split():
+            if len(current_line + word) < max_line_length:
+                current_line += ' ' + word
+            else:
+                lines.append(current_line)
+                current_line = word
 
+        if current_line:
+            lines.append(current_line)
+            current_line = ""
 
-Window.size = (360, 640)
-Window.clearcolor = (.7, .5, .9, 1)
-
-
-class MyApp(App):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        btn = Button(text="hello",
-                     font_size="50sp")
-        self.main_layout = FloatLayout()
-        self.main_layout.add_widget(btn)
-
-    def build(self):
-        return self.main_layout
+    return '\n'.join(lines)
 
 
-if __name__ == "__main__":
-    MyApp().run()
+str_ = "Это первый абзац, нужно сделать разделение\nЭто второй абзац, он должен быть отдельно от первого"
+print(switch_new_line(str_, 20))

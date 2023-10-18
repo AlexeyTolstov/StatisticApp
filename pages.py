@@ -26,17 +26,17 @@ class WelcomePage(FloatLayout):
     def __init__(self):
         super().__init__()
         self.title_label = Label(text="Добрый день",
-                                      pos_hint={'center_x': 0.5,
-                                                'center_y': 0.9},
-                                      size_hint=(0.1, 0.05),
-                                      bold=True,
-                                      halign="center")
+                                 pos_hint={'center_x': 0.5,
+                                           'center_y': 0.9},
+                                 size_hint=(0.1, 0.05),
+                                 bold=True,
+                                 halign="center")
 
         text = "Пройдите наш опрос по внеурочной деятельности [Текст такого содержания]"
         self.text_label = Label(text=switch_new_line(text, 20),
-                                      pos_hint={'center_x': 0.5,
-                                                'center_y': 0.6},
-                                      size_hint=(0.5, 0.4))
+                                pos_hint={'center_x': 0.5,
+                                          'center_y': 0.6},
+                                size_hint=(0.5, 0.4))
 
         self.btn_next = Button(text="Начать",
                                pos_hint={'center_x': 0.5,
@@ -85,10 +85,10 @@ class RegistrationPage(FloatLayout):
 
         self.gender_not_label = Label(pos_hint={'center_x': 0.5,
                                                 'center_y': 0.7},
-                                        halign="center",
-                                        color=[1, 0, 0, 1],
-                                        bold=True,
-                                        font_size=20)
+                                      halign="center",
+                                      color=[1, 0, 0, 1],
+                                      bold=True,
+                                      font_size=20)
 
         self.dropdown_class = DropDownClasses()
         self.btn_class = Button(text="Выбрать\nкласс",
@@ -104,13 +104,13 @@ class RegistrationPage(FloatLayout):
         self.dropdown_class.bind(on_select=lambda instance, x: setattr(self.btn_class, "text", x))
 
         self.class_not_label = Label(pos_hint={'center_x': 0.5,
-                                            'center_y': 0.44},
-                                halign="center",
-                                color=[1, 0, 0, 1],
-                                bold=True,
-                                font_size=20)
+                                               'center_y': 0.44},
+                                     halign="center",
+                                     color=[1, 0, 0, 1],
+                                     bold=True,
+                                     font_size=20)
 
-        self.btn_next = Button(text="Следущая страница",
+        self.btn_next = Button(text="Следующая страница",
                                pos_hint={'center_x': 0.5,
                                          'center_y': 0.1},
                                size_hint=(0.9, 0.1),
@@ -150,7 +150,7 @@ class RegistrationPage(FloatLayout):
             self.gender_not_label.text = "Вы не указали пол"
         else:
             self.gender_not_label.text = ""
-        
+
         return gender and age.isdigit()
 
     def get_data(self):
@@ -180,15 +180,15 @@ class InterestsPage(FloatLayout):
                                        bold=True)
 
         self.interesting = MultiplyChoiceCheckBox(choices=classes[7].keys(),
-                        size_hint=(.75, .7),
-                        pos_hint={'center_x': 0.4, 'center_y': 0.57})
+                                                  size_hint=(.75, .7),
+                                                  pos_hint={'center_x': 0.4, 'center_y': 0.57})
 
         self.interesting_label_not = Label(size_hint=(.5, .2),
                                            pos_hint={'center_x': 0.5, 'center_y': 0.19},
                                            color=[1, 0, 0, 1],
                                            halign="center")
 
-        self.btn_next = Button(text="Следущая\nстраница",
+        self.btn_next = Button(text="Следующая\nстраница",
                                pos_hint={'center_x': 0.75,
                                          'center_y': 0.1},
                                size_hint=(0.4, 0.15),
@@ -254,8 +254,8 @@ class RestPage(FloatLayout):
                                 bold=True)
 
         self.rest_cb = MultiplyChoiceCheckBox(rest,
-                        size_hint=(.7, .4),
-                        pos_hint={'center_x': 0.4, 'center_y': 0.5})
+                                              size_hint=(.7, .4),
+                                              pos_hint={'center_x': 0.4, 'center_y': 0.5})
 
         self.rest_label_not = Label(size_hint=(.5, .2),
                                     pos_hint={'center_x': 0.5, 'center_y': 0.25},
@@ -263,7 +263,7 @@ class RestPage(FloatLayout):
                                     halign="center",
                                     bold=True)
 
-        self.btn_next = Button(text="Следущая\nстраница",
+        self.btn_next = Button(text="Следующая\nстраница",
                                pos_hint={'center_x': 0.75,
                                          'center_y': 0.1},
                                size_hint=(0.4, 0.15),
@@ -321,10 +321,10 @@ class SectionPage(FloatLayout):
         super().__init__()
 
         self.label = Label(text="В городе Бийск есть кружки.\n Выберите те, которые посещаете",
-                                      pos_hint={'center_x': 0.5,
-                                                'center_y': 0.9},
-                                      size_hint=(0.8, 0.05),
-                                      bold=True)
+                           pos_hint={'center_x': 0.5,
+                                     'center_y': 0.9},
+                           size_hint=(0.8, 0.05),
+                           bold=True)
         self.add_widget(self.label)
 
         self.choice_lst = []
@@ -336,7 +336,7 @@ class SectionPage(FloatLayout):
                                                    'center_y': 0.5},
                                          size_hint=(0.6, 0.5))
 
-        self.btn_next = Button(text="Следущая\nстраница",
+        self.btn_next = Button(text="Следующая\nстраница",
                                pos_hint={'center_x': 0.75,
                                          'center_y': 0.1},
                                size_hint=(0.4, 0.15),
@@ -411,13 +411,13 @@ class TelephonePage(FloatLayout):
                            bold=True)
 
         self.telephone_label = Button(text="",  # +7 (XXX) XXX-XX-XX
-                                     pos_hint={'center_x': 0.5,
-                                               'center_y': 0.5},
-                                     size_hint=(.7, 0.1),
-                                     bold=True,
-                                     background_normal="",
-                                     background_down="",
-                                     background_color=(1, .4, .4, 1))
+                                      pos_hint={'center_x': 0.5,
+                                                'center_y': 0.5},
+                                      size_hint=(.7, 0.1),
+                                      bold=True,
+                                      background_normal="",
+                                      background_down="",
+                                      background_color=(1, .4, .4, 1))
 
         self.telephone_label.bind(on_press=self.open_keyboard)
         self.number_keyboard = NumberKeyboard(self.label,
@@ -425,7 +425,7 @@ class TelephonePage(FloatLayout):
                                                         'center_y': 0.2},
                                               size_hint=(1, 0.4))
 
-        self.btn_next = Button(text="Следущая\nстраница",
+        self.btn_next = Button(text="Следующая\nстраница",
                                pos_hint={'center_x': 0.75,
                                          'center_y': 0.1},
                                size_hint=(0.4, 0.15),
@@ -449,17 +449,17 @@ class TelephonePage(FloatLayout):
         self.label.scale = 0.1
 
         self.number_keyboard.btn_0.scale = \
-        self.number_keyboard.btn_1.scale = \
-        self.number_keyboard.btn_2.scale = \
-        self.number_keyboard.btn_3.scale = \
-        self.number_keyboard.btn_4.scale = \
-        self.number_keyboard.btn_5.scale = \
-        self.number_keyboard.btn_6.scale = \
-        self.number_keyboard.btn_7.scale = \
-        self.number_keyboard.btn_8.scale = \
-        self.number_keyboard.btn_9.scale = \
-        self.number_keyboard.btn_delete.scale = \
-        self.number_keyboard.btn_enter.scale = 0.3
+            self.number_keyboard.btn_1.scale = \
+            self.number_keyboard.btn_2.scale = \
+            self.number_keyboard.btn_3.scale = \
+            self.number_keyboard.btn_4.scale = \
+            self.number_keyboard.btn_5.scale = \
+            self.number_keyboard.btn_6.scale = \
+            self.number_keyboard.btn_7.scale = \
+            self.number_keyboard.btn_8.scale = \
+            self.number_keyboard.btn_9.scale = \
+            self.number_keyboard.btn_delete.scale = \
+            self.number_keyboard.btn_enter.scale = 0.3
 
         self.btn_next.bind(size=self.update_font_size)
         self.btn_back.bind(size=self.update_font_size)
@@ -533,7 +533,8 @@ class ResultPage(FloatLayout):
                                    font_size=30)
 
         self.info_text = Label(text=f"Пол: {data_dict['Gender']}\n\nВозраст: {data_dict['Class']}\n" +
-                               f"Интересы: {data_dict['FavoriteSubjects']}\n\nОтдых: {data_dict['Rests']}\n\n Секции: {data_dict['Sections']}")
+                                    f"Интересы: {data_dict['FavoriteSubjects']}\n\nОтдых: {data_dict['Rests']}\n\n "
+                                    f"Секции: {data_dict['Sections']}")
 
         self.btn_next = Button(text="Завершить",
                                pos_hint={'center_x': 0.5,
@@ -556,16 +557,17 @@ class ResultPage(FloatLayout):
 
     def update(self):
         self.info_text.text = f"Пол: {data_dict['Gender']}\n\nВозраст: {data_dict['Class']}\n" + \
-                                    f"Интересы: {data_dict['FavoriteSubjects']}\n\nОтдых: {data_dict['Rests']}\n\n Секции: {data_dict['Sections']}"
+                              f"Интересы: {data_dict['FavoriteSubjects']}\n\nОтдых: {data_dict['Rests']}\n\n" + \
+                              f"Секции: {data_dict['Sections']}"
 
 
 class AboutPage(FloatLayout):
     def __init__(self):
         super().__init__()
         self.text_label = Label(text="",
-                                      pos_hint={'center_x': 0.5,
-                                                'center_y': 0.6},
-                                      size_hint=(0.5, 0.4))
+                                pos_hint={'center_x': 0.5,
+                                          'center_y': 0.6},
+                                size_hint=(0.5, 0.4))
 
         self.btn_next = Button(text="Дальше",
                                pos_hint={'center_x': 0.5,
@@ -604,7 +606,8 @@ class AboutPage(FloatLayout):
         else:
             text = "А тебе нормально столько кружков"
 
-        self.text_label.text = switch_new_line(text, 20) + "\n" + switch_new_line("На следущей странице вы можете указать телефон родителя, чтобы мы рассказали о ваших результатах", 25)
+        self.text_label.text = switch_new_line(text, 20) + "\n" + switch_new_line(
+            "На следующей странице вы можете указать телефон родителя, чтобы мы рассказали о ваших результатах", 25)
 
 
 class CompletionPage(FloatLayout):
@@ -612,9 +615,9 @@ class CompletionPage(FloatLayout):
         super().__init__()
         text = "Спасибо за прохождение опроса"
         self.text_label = Label(text=switch_new_line(text, 20),
-                                      pos_hint={'center_x': 0.5,
-                                                'center_y': 0.6},
-                                      size_hint=(0.5, 0.4))
+                                pos_hint={'center_x': 0.5,
+                                          'center_y': 0.6},
+                                size_hint=(0.5, 0.4))
 
         self.btn_next = Button(text="Завершить",
                                pos_hint={'center_x': 0.5,

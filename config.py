@@ -1,9 +1,9 @@
 data_dict = {"Gender": None,
-"Class": None,
-"PhoneNumber": None,
-"FavoriteSubjects": [],
-"Rests": [],
-"Sections": []}
+             "Class": None,
+             "PhoneNumber": None,
+             "FavoriteSubjects": [],
+             "Rests": [],
+             "Sections": []}
 
 """
 "Gender"
@@ -12,7 +12,6 @@ data_dict = {"Gender": None,
 "FavoriteSubjects"
 "Rest"
 """
-
 
 subjects_7 = {
     "Алгебра/геометрия": ["Алгоритмика"],
@@ -35,14 +34,12 @@ subjects_7 = {
     "География": []
 }
 
-
 rest = ["Спорт (активный отдых)",
         "Чтение книг (комиксов)",
         "Творчество (лепка, \nрисование, бисер и т.д.)",
         "Компьютерные игры",
         "Просмотр чего-либо (YouTube, \nфильмы, мультфильмы и т.д.)",
         "Лежание на диване"]
-
 
 classes = {1: None,
            2: None,
