@@ -5,14 +5,6 @@ data_dict = {"Gender": None,
              "Rests": [],
              "Sections": []}
 
-"""
-"Gender"
-"Class"
-"PhoneNumber"
-"FavoriteSubjects"
-"Rest"
-"""
-
 subjects_7 = {
     "Алгебра/геометрия": ["Алгоритмика"],
     "Иностранный язык": ["Lexika", "Софтиум", "Классика", "smart", "Юник club",
@@ -53,4 +45,5 @@ classes = {1: None,
            10: None,
            11: None}
 
+background_canvas_color = (.7, .5, .9, 1)
 btn_color = (.9, .3, .3, 1)

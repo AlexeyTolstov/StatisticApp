@@ -5,7 +5,7 @@ def switch_new_line(text, max_line_length):
     for line in text.split("\n"):
         for word in line.split():
             if len(current_line + word) < max_line_length:
-                current_line += ' ' + word
+                current_line += word + ' '
             else:
                 lines.append(current_line)
                 current_line = word

@@ -5,13 +5,14 @@ from pages import *
 
 
 Window.size = (360, 640)
-Window.clearcolor = (.7, .5, .9, 1)
+Window.clearcolor = background_canvas_color
 
 
 class MyApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.layouts_lst = [WelcomePage(),
+                            GenderPage(),
                             RegistrationPage(),
                             InterestsPage(),
                             RestPage(),
@@ -81,7 +82,6 @@ class MyApp(App):
 
             try:
                 self.opened_page.btn_next.bind(on_press=self.next_page)
-                print(self.opened_page)
             except AttributeError:
                 pass
 

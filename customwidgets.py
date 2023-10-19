@@ -17,7 +17,6 @@ class GenderLayout(BoxLayout):
                                         bold=True)
         self.add_widget(self.man_checkbox)
         self.add_widget(self.man_checkbox.label)
-        self.man_checkbox.bind(active=self.on_radiobutton)
 
         self.woman_checkbox = CheckBox(group="gender")
         self.woman_checkbox.label = Label(text="Женский",
@@ -31,7 +30,6 @@ class GenderLayout(BoxLayout):
 
         self.add_widget(self.woman_checkbox)
         self.add_widget(self.woman_checkbox.label)
-        self.woman_checkbox.bind(active=self.on_radiobutton)
 
     @staticmethod
     def update_font_size(instance, value):

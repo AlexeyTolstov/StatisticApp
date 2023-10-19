@@ -1,23 +1,25 @@
 from customwidgets import *
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.image import Image
 
 from config import *
 
 
 def switch_new_line(text, max_line_length):
-    words = text.split()
     lines = []
-    current_line = words[0]
+    current_line = ""
 
-    for word in words[1:]:
-        if len(current_line + ' ' + word) <= max_line_length:
-            current_line += ' ' + word
-        else:
+    for line in text.split("\n"):
+        for word in line.split():
+            if len(current_line + word) < max_line_length:
+                current_line += ' ' + word
+            else:
+                lines.append(current_line)
+                current_line = word
+
+        if current_line:
             lines.append(current_line)
-            current_line = word
-
-    if current_line:
-        lines.append(current_line)
+            current_line = ""
 
     return '\n'.join(lines)
 
@@ -25,14 +27,15 @@ def switch_new_line(text, max_line_length):
 class WelcomePage(FloatLayout):
     def __init__(self):
         super().__init__()
-        self.title_label = Label(text="Добрый день",
+        self.title_label = Label(text="Привет, Друг!",
                                  pos_hint={'center_x': 0.5,
                                            'center_y': 0.9},
                                  size_hint=(0.1, 0.05),
                                  bold=True,
                                  halign="center")
 
-        text = "Пройдите наш опрос по внеурочной деятельности [Текст такого содержания]"
+        text = "Мы твои сверстники. У нас есть увлечения кроме школы."
+
         self.text_label = Label(text=switch_new_line(text, 20),
                                 pos_hint={'center_x': 0.5,
                                           'center_y': 0.6},
@@ -67,6 +70,90 @@ class WelcomePage(FloatLayout):
     def update_font_size(instance, _):
         new_font_size = instance.width * instance.scale
         instance.font_size = new_font_size
+
+
+class GenderPage(FloatLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        self.gender_label = Label(text="Выберите пол:",
+                                  pos_hint={'center_x': 0.5,
+                                            'center_y': 0.9},
+                                  halign="center",
+                                  bold=True,
+                                  font_size=25)
+
+        self.gender_layout = GenderLayout(pos_hint={'center_x': 0.45, 'center_y': 0.82},
+                                          size_hint=(1, .1))
+        self.gender_layout.man_checkbox.bind(active=self.on_radiobutton)
+        self.gender_layout.woman_checkbox.bind(active=self.on_radiobutton)
+
+        self.gender_not_label = Label(pos_hint={'center_x': 0.5,
+                                                'center_y': 0.7},
+                                      halign="center",
+                                      color=[1, 0, 0, 1],
+                                      bold=True,
+                                      font_size=20)
+
+        self.image = Image(pos_hint={'center_x': 0.5,
+                                     'center_y': 0.5},
+                           size_hint=(0.5, 0.5),
+                           color=background_canvas_color)
+
+        self.btn_next = Button(text="Следующая страница",
+                               pos_hint={'center_x': 0.5,
+                                         'center_y': 0.1},
+                               size_hint=(0.9, 0.1),
+                               background_color=(1, .4, .4, 1),
+                               background_normal="",
+                               bold=True,
+                               halign="center")
+
+        self.btn_next.scale = 0.07
+        self.gender_label.scale = 0.07
+        self.gender_not_label.scale = 0.05
+
+        self.btn_next.bind(size=self.update_font_size)
+        self.gender_label.bind(size=self.update_font_size)
+        self.gender_not_label.bind(size=self.update_font_size)
+
+        self.add_widget(self.gender_layout)
+        self.add_widget(self.image)
+        self.add_widget(self.gender_label)
+        self.add_widget(self.gender_not_label)
+
+        self.add_widget(self.btn_next)
+
+    def is_can_next(self):
+        gender = self.gender_layout.check_data()
+
+        if not gender:
+            self.gender_not_label.text = "Вы не указали пол"
+        else:
+            self.gender_not_label.text = ""
+
+        return gender
+
+    def get_data(self):
+        global data_dict
+
+        if self.gender_layout.man_checkbox.active:
+            data_dict["Gender"] = "Мужской пол"
+        else:
+            data_dict["Gender"] = "Женский пол"
+
+    @staticmethod
+    def update_font_size(instance, _):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
+
+    def on_radiobutton(self, instance, value):
+        if value:
+            if instance.label.text == "Мужской":
+                self.image.source = "man_logo.jpg"
+            else:
+                self.image.source = "woman_logo.png"
+            self.image.color = (1, 1, 1, 1)
 
 
 class RegistrationPage(FloatLayout):
