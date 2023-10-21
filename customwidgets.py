@@ -47,7 +47,7 @@ class GenderLayout(BoxLayout):
 class DropDownClasses(DropDown):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.max_height = 500
+        self.max_height = 420
         self.container.spacing = 3
 
         for i in range(1, 12):

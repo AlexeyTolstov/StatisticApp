@@ -36,6 +36,11 @@ class WelcomePage(FloatLayout):
 
         text = "Мы твои сверстники. У нас есть увлечения кроме школы."
 
+        self.image = Image(source="creator_2.png",
+                           pos_hint={'center_x': 0.5,
+                                     'center_y': 0.3},
+                           size_hint=(0.9, 1))
+
         self.text_label = Label(text=switch_new_line(text, 20),
                                 pos_hint={'center_x': 0.5,
                                           'center_y': 0.6},
@@ -60,6 +65,7 @@ class WelcomePage(FloatLayout):
 
         self.add_widget(self.title_label)
         self.add_widget(self.text_label)
+        self.add_widget(self.image)
         self.add_widget(self.btn_next)
 
     @staticmethod
@@ -80,20 +86,12 @@ class GenderPage(FloatLayout):
                                   pos_hint={'center_x': 0.5,
                                             'center_y': 0.9},
                                   halign="center",
-                                  bold=True,
-                                  font_size=25)
+                                  bold=True)
 
         self.gender_layout = GenderLayout(pos_hint={'center_x': 0.45, 'center_y': 0.82},
                                           size_hint=(1, .1))
         self.gender_layout.man_checkbox.bind(active=self.on_radiobutton)
         self.gender_layout.woman_checkbox.bind(active=self.on_radiobutton)
-
-        self.gender_not_label = Label(pos_hint={'center_x': 0.5,
-                                                'center_y': 0.7},
-                                      halign="center",
-                                      color=[1, 0, 0, 1],
-                                      bold=True,
-                                      font_size=20)
 
         self.image = Image(pos_hint={'center_x': 0.5,
                                      'center_y': 0.5},
@@ -111,26 +109,16 @@ class GenderPage(FloatLayout):
 
         self.btn_next.scale = 0.07
         self.gender_label.scale = 0.07
-        self.gender_not_label.scale = 0.05
 
         self.btn_next.bind(size=self.update_font_size)
         self.gender_label.bind(size=self.update_font_size)
-        self.gender_not_label.bind(size=self.update_font_size)
 
         self.add_widget(self.gender_layout)
         self.add_widget(self.image)
         self.add_widget(self.gender_label)
-        self.add_widget(self.gender_not_label)
-
-        self.add_widget(self.btn_next)
 
     def is_can_next(self):
         gender = self.gender_layout.check_data()
-
-        if not gender:
-            self.gender_not_label.text = "Вы не указали пол"
-        else:
-            self.gender_not_label.text = ""
 
         return gender
 
@@ -154,33 +142,20 @@ class GenderPage(FloatLayout):
             else:
                 self.image.source = "woman_logo.png"
             self.image.color = (1, 1, 1, 1)
+            self.add_widget(self.btn_next)
+        else:
+            self.image.color = background_canvas_color
+            self.image.source = ""
+            self.remove_widget(self.btn_next)
 
 
-class RegistrationPage(FloatLayout):
+class ClassPage(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-        self.gender_label = Label(text="Выберите пол:",
-                                  pos_hint={'center_x': 0.5,
-                                            'center_y': 0.9},
-                                  halign="center",
-                                  bold=True,
-                                  font_size=25)
-
-        self.gender_layout = GenderLayout(pos_hint={'center_x': 0.45, 'center_y': 0.82},
-                                          size_hint=(1, .1))
-
-        self.gender_not_label = Label(pos_hint={'center_x': 0.5,
-                                                'center_y': 0.7},
-                                      halign="center",
-                                      color=[1, 0, 0, 1],
-                                      bold=True,
-                                      font_size=20)
-
         self.dropdown_class = DropDownClasses()
         self.btn_class = Button(text="Выбрать\nкласс",
                                 pos_hint={'center_x': 0.5,
-                                          'center_y': 0.55},
+                                          'center_y': 0.9},
                                 size_hint=(.3, .15),
                                 halign="center",
                                 background_color=(1, .4, .4, 1),
@@ -194,8 +169,7 @@ class RegistrationPage(FloatLayout):
                                                'center_y': 0.44},
                                      halign="center",
                                      color=[1, 0, 0, 1],
-                                     bold=True,
-                                     font_size=20)
+                                     bold=True)
 
         self.btn_next = Button(text="Следующая страница",
                                pos_hint={'center_x': 0.5,
@@ -208,45 +182,26 @@ class RegistrationPage(FloatLayout):
 
         self.btn_class.scale = 0.2
         self.btn_next.scale = 0.07
-        self.gender_label.scale = 0.07
         self.class_not_label.scale = 0.05
-        self.gender_not_label.scale = 0.05
 
         self.btn_class.bind(size=self.update_font_size)
         self.btn_next.bind(size=self.update_font_size)
-        self.gender_label.bind(size=self.update_font_size)
         self.class_not_label.bind(size=self.update_font_size)
-        self.gender_not_label.bind(size=self.update_font_size)
-
-        self.add_widget(self.gender_layout)
-        self.add_widget(self.gender_label)
-        self.add_widget(self.gender_not_label)
 
         self.add_widget(self.class_not_label)
         self.add_widget(self.btn_class)
         self.add_widget(self.btn_next)
 
     def is_can_next(self):
-        gender = self.gender_layout.check_data()
-        age = self.btn_class.text
+        class_user = self.btn_class.text
 
-        if not age.isdigit():
+        if not class_user.isdigit():
             self.class_not_label.text = "Выберите класс"
 
-        if not gender:
-            self.gender_not_label.text = "Вы не указали пол"
-        else:
-            self.gender_not_label.text = ""
-
-        return gender and age.isdigit()
+        return class_user.isdigit()
 
     def get_data(self):
         global data_dict
-
-        if self.gender_layout.man_checkbox.active:
-            data_dict["Gender"] = "Мужской пол"
-        else:
-            data_dict["Gender"] = "Женский пол"
 
         data_dict["Class"] = self.btn_class.text
 
@@ -260,7 +215,7 @@ class InterestsPage(FloatLayout):
     def __init__(self):
         super().__init__()
 
-        self.interesting_label = Label(text="Список предпочитаемых предметов",
+        self.interesting_label = Label(text=switch_new_line("Какие из школьных предметов тебе нравятся больше всего?", 30),
                                        size_hint=(1, .1),
                                        pos_hint={'center_x': 0.5, 'center_y': 0.95},
                                        halign="center",
@@ -334,7 +289,7 @@ class InterestsPage(FloatLayout):
 class RestPage(FloatLayout):
     def __init__(self):
         super().__init__()
-        self.rest_label = Label(text="Список предпочитаемого отдыха",
+        self.rest_label = Label(text="Как ты обычно отдыхаешь?",
                                 size_hint=(1, .5),
                                 pos_hint={'center_x': 0.55, 'center_y': 0.8},
                                 halign="center",
@@ -616,8 +571,7 @@ class ResultPage(FloatLayout):
 
         self.welcome_label = Label(text="Опрос пройден.\n Вот результат:",
                                    pos_hint={'center_x': 0.5, 'center_y': 0.9},
-                                   size_hint=(0.1, 0.05),
-                                   font_size=30)
+                                   size_hint=(0.1, 0.05))
 
         self.info_text = Label(text=f"Пол: {data_dict['Gender']}\n\nВозраст: {data_dict['Class']}\n" +
                                     f"Интересы: {data_dict['FavoriteSubjects']}\n\nОтдых: {data_dict['Rests']}\n\n "
@@ -630,8 +584,7 @@ class ResultPage(FloatLayout):
                                background_color=(1, .4, .4, 1),
                                background_normal="",
                                bold=True,
-                               halign="center",
-                               font_size=25)
+                               halign="center")
 
         self.add_widget(self.welcome_label)
         self.add_widget(self.info_text)
@@ -665,7 +618,7 @@ class AboutPage(FloatLayout):
                                bold=True,
                                halign="center")
 
-        self.text_label.scale = 0.15
+        self.text_label.scale = 0.12
         self.btn_next.scale = 0.1
 
         self.btn_next.bind(size=self.update_font_size)
@@ -686,7 +639,9 @@ class AboutPage(FloatLayout):
     def update(self):
         global data_dict
 
-        if len(data_dict["Sections"]) == 0 or data_dict["Sections"][0] == "Другое":
+        print(data_dict["Sections"])
+
+        if len(data_dict["Sections"]) == 0 or data_dict["Sections"][0] == "Ничего":
             text = "В вашем городе есть кружки вам по интересам, вы можете записаться на них"
         elif 0 < len(data_dict["Sections"]) < 3:
             text = "У вас все хорошо"

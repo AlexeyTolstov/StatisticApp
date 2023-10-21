@@ -13,13 +13,12 @@ class MyApp(App):
         super().__init__(**kwargs)
         self.layouts_lst = [WelcomePage(),
                             GenderPage(),
-                            RegistrationPage(),
+                            ClassPage(),
                             InterestsPage(),
                             RestPage(),
                             SectionPage(),
                             AboutPage(),
                             TelephonePage(),
-                            # ResultPage(),
                             CompletionPage()]
 
         self.opened_page_ind = 0
