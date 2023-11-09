@@ -138,9 +138,9 @@ class GenderPage(FloatLayout):
     def on_radiobutton(self, instance, value):
         if value:
             if instance.label.text == "Мужской":
-                self.image.source = "man_logo.jpg"
+                self.image.source = "man.png"
             else:
-                self.image.source = "woman_logo.png"
+                self.image.source = "woman.png"
             self.image.color = (1, 1, 1, 1)
             self.add_widget(self.btn_next)
         else:
