@@ -4,6 +4,9 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 
 from kivy.uix.boxlayout import BoxLayout
+from kivy.graphics import Color, RoundedRectangle
+
+from config import *
 
 
 class GenderLayout(BoxLayout):
@@ -13,13 +16,13 @@ class GenderLayout(BoxLayout):
 
         self.man_checkbox = CheckBox(group="gender",
                                      color=(1, 1, 1, 1))
-        self.man_checkbox.label = Label(text="Мужской",
+        self.man_checkbox.label = Label(text="Мальчик",
                                         bold=True)
         self.add_widget(self.man_checkbox)
         self.add_widget(self.man_checkbox.label)
 
         self.woman_checkbox = CheckBox(group="gender")
-        self.woman_checkbox.label = Label(text="Женский",
+        self.woman_checkbox.label = Label(text="Девочка",
                                           bold=True)
 
         self.woman_checkbox.label.scale = 0.25
@@ -44,19 +47,62 @@ class GenderLayout(BoxLayout):
         return self.man_checkbox.active or self.woman_checkbox.active
 
 
+class RoundedButton(Button):
+    def __init__(self, color_, radius_=20, **kwargs):
+        super(RoundedButton, self).__init__(**kwargs)
+        self.background_color = (0, 0, 0, 0)
+        self.bind(pos=self.update_canvas, size=self.update_canvas)
+        self.color_ = color_
+        self.radius_ = radius_
+
+    def update_canvas(self, *args):
+        self.canvas.before.clear()
+        with self.canvas.before:
+            Color(*self.color_)
+            RoundedRectangle(pos=self.pos, size=self.size, radius=[self.radius_,])
+
+
 class DropDownClasses(DropDown):
-    def __init__(self, **kwargs):
+    def __init__(self, height_win, **kwargs):
         super().__init__(**kwargs)
-        self.max_height = 420
+        self.height_win = height_win
+        self.max_height = 3 * height_win
         self.container.spacing = 3
 
         for i in range(1, 12):
-            btn = Button(text=str(i),
-                         size_hint_y=None,
-                         height=200,
-                         background_color=(.9, .3, .3, 1),
-                         background_normal="",
-                         font_size=60)
+            btn = RoundedButton(
+                        radius_=10,
+                        text=str(i),
+                        size_hint_y=None,
+                        height=height_win * 0.35,
+                        background_color=(1, 1, 1, 0.95),
+                        background_normal="",
+                        color_=(.55, .51, 1),
+                        bold=True,
+                        font_size=height_win * 0.15)
+
+            btn.bind(on_release=lambda btn_: self.select(btn_.text))
+            self.add_widget(btn)
+
+
+class DropDownCity(DropDown):
+    def __init__(self, height_win, **kwargs):
+        super().__init__(**kwargs)
+        self.height_win = height_win
+        self.max_height = 3 * height_win
+        self.container.spacing = 3
+
+        for i in city_dict.keys():
+            btn = RoundedButton(
+                        radius_=10,
+                        text=str(i),
+                        size_hint_y=None,
+                        height=height_win * 0.35,
+                        background_color=(1, 1, 1, 0.95),
+                        background_normal="",
+                        color_=(.55, .51, 1),
+                        bold=True,
+                        font_size=height_win * 0.15)
 
             btn.bind(on_release=lambda btn_: self.select(btn_.text))
             self.add_widget(btn)
@@ -68,7 +114,7 @@ class NumberKeyboard(BoxLayout):
         self.orientation = "vertical"
         self.spacing = 3
         self.padding = 3
-
+        self.color = (102/255, 90/255, 225/255)
         row1 = BoxLayout(orientation="horizontal", spacing=3)
         row2 = BoxLayout(orientation="horizontal", spacing=3)
         row3 = BoxLayout(orientation="horizontal", spacing=3)
@@ -76,51 +122,63 @@ class NumberKeyboard(BoxLayout):
 
         self.btn_1 = Button(text="1",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_2 = Button(text="2",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_3 = Button(text="3",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_4 = Button(text="4",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_5 = Button(text="5",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_6 = Button(text="6",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_7 = Button(text="7",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_8 = Button(text="8",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_9 = Button(text="9",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_delete = Button(text="DEL",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_0 = Button(text="0",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_enter = Button(text="OK",
                             background_normal="",
-                            background_color=(.9, .3, .3, 1))
+                            background_color=self.color,
+                            bold=True)
 
         self.btn_0.bind(size=self.update_font_size)
         self.btn_1.bind(size=self.update_font_size)
@@ -175,7 +233,8 @@ class MultiplyChoiceCheckBox(BoxLayout):
         for choice in choices:
             layout = BoxLayout(orientation="horizontal")
             layout.cb = CheckBox()
-            layout.cb.label = Label(text=str(choice))
+            layout.cb.label = Label(text=str(choice),
+                                    bold=True)
 
             layout.cb.label.bind(size=self.update_font_size)
             layout.cb.label.scale = 0.13

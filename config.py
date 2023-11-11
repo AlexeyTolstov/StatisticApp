@@ -3,7 +3,8 @@ data_dict = {"Gender": None,
              "PhoneNumber": None,
              "FavoriteSubjects": [],
              "Rests": [],
-             "Sections": []}
+             "Sections": [],
+             "City": None}
 
 subjects_7 = {
     "Алгебра/геометрия": ["Алгоритмика"],
@@ -45,5 +46,4 @@ classes = {1: None,
            10: None,
            11: None}
 
-background_canvas_color = (.7, .5, .9, 1)
-btn_color = (.9, .3, .3, 1)
+city_dict = {"Бийск": classes}

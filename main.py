@@ -1,17 +1,19 @@
 from kivy.app import App
+from pages import *
 from kivy.core.window import Window
 
-from pages import *
-
-
-Window.size = (360, 640)
-Window.clearcolor = background_canvas_color
+# Window.size = (360, 640)
 
 
 class MyApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.layouts_lst = [WelcomePage(),
+        self.layouts_lst = [
+                            WelcomePage(),
+                            AboutAlexPage(),
+                            AboutElPage(),
+                            AcquaintPage(),
+                            CityPage(),
                             GenderPage(),
                             ClassPage(),
                             InterestsPage(),
@@ -19,7 +21,8 @@ class MyApp(App):
                             SectionPage(),
                             AboutPage(),
                             TelephonePage(),
-                            CompletionPage()]
+                            CompletionPage()
+        ]
 
         self.opened_page_ind = 0
         self.opened_page = self.layouts_lst[self.opened_page_ind]
@@ -66,6 +69,7 @@ class MyApp(App):
             self.opened_page.get_data()
         except AttributeError:
             pass
+        print(data_dict)
 
         if res:
             self.main_layout.remove_widget(self.opened_page)
