@@ -2,6 +2,7 @@ from customwidgets import *
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.graphics import Color, RoundedRectangle, Rectangle
+from kivy.core.window import Window
 from config import *
 
 
@@ -51,15 +52,14 @@ class WelcomePage(FloatLayout):
                                           'center_y': 0.65},
                                 size_hint=(0.5, 0.4))
 
-        self.btn_next = RoundedButton(color_=(1, 1, 1),
-                                text="Познакомиться получше",
-                               pos_hint={'center_x': 0.5,
-                                         'center_y': 0.1},
-                               size_hint=(0.6, 0.07),
-                               color=(.55, .51, 1),
-                               background_normal="",
-                               bold=True,
-                               halign="center")
+        self.btn_next = RoundedButton(text="Познакомиться получше",
+                                    pos_hint={'center_x': 0.5,
+                                              'center_y': 0.1},
+                                    size_hint=(0.6, 0.07),
+                                    color=(.55, .51, 1),
+                                    background_normal="",
+                                    bold=True,
+                                    halign="center")
 
         self.text_label_2 = Label(bold=True,
                                 text="Давай познакомимся получше",
@@ -125,15 +125,15 @@ class AboutAlexPage(FloatLayout):
                                 color=(0, 0, 0, 1))
 
         self.btn_next = RoundedButton(color_=(.39, .34, .89),
-                                text="Далее",
-                               pos_hint={'center_x': 0.5,
-                                         'center_y': 0.1},
-                               size_hint=(0.6, 0.07),
-                               color=(1, 1, 1),
-                               background_color=(0, 0, 0, 1),
-                               background_normal="",
-                               bold=True,
-                               halign="center")
+                                    text="Далее",
+                                    pos_hint={'center_x': 0.5,
+                                              'center_y': 0.1},
+                                    size_hint=(0.6, 0.07),
+                                    color=(1, 1, 1),
+                                    background_color=(0, 0, 0, 1),
+                                    background_normal="",
+                                    bold=True,
+                                    halign="center")
 
         self.text_label.scale = 0.11
         self.btn_next.scale = 0.07
@@ -190,13 +190,13 @@ class AboutElPage(FloatLayout):
 
         self.btn_next = RoundedButton(color_=(.95, .94, .99),
                                 text="Далее",
-                               pos_hint={'center_x': 0.5,
-                                         'center_y': 0.1},
-                               size_hint=(0.6, 0.07),
-                               color=(.55, .51, 1),
-                               background_normal="",
-                               bold=True,
-                               halign="center")
+                                pos_hint={'center_x': 0.5,
+                                             'center_y': 0.1},
+                                size_hint=(0.6, 0.07),
+                                color=(.55, .51, 1),
+                                background_normal="",
+                                bold=True,
+                                halign="center")
 
         self.text_label.scale = 0.11
         self.btn_next.scale = 0.07
@@ -244,13 +244,13 @@ class AcquaintPage(FloatLayout):
 
         self.btn_next = RoundedButton(color_=(1, 1, 1),
                                 text="Далее",
-                               pos_hint={'center_x': 0.5,
-                                         'center_y': 0.1},
-                               size_hint=(0.6, 0.07),
-                               color=(.55, .51, 1),
-                               background_normal="",
-                               bold=True,
-                               halign="center")
+                                pos_hint={'center_x': 0.5,
+                                          'center_y': 0.1},
+                                size_hint=(0.6, 0.07),
+                                color=(.55, .51, 1),
+                                background_normal="",
+                                bold=True,
+                                halign="center")
 
         self.text_label.scale = 0.15
         self.btn_next.scale = 0.07
@@ -302,7 +302,7 @@ class CityPage(FloatLayout):
                                bold=True,
                                halign="center")
 
-        self.dropdown_city = DropDownCity(height_win=self.height)
+        self.dropdown_city = DropDownCity(height_win=Window.height)
 
         self.btn_search_city.bind(on_release=self.dropdown_city.open)
         self.dropdown_city.bind(on_select=self.show_next)
@@ -335,7 +335,8 @@ class CityPage(FloatLayout):
         self.rect.pos = instance.pos
 
     def show_next(self, instance, x):
-        setattr(self.btn_search_city, "text", x)
+        self.remove_widget(self.btn_next)
+        self.btn_search_city.text = x
         self.add_widget(self.btn_next)
 
     @staticmethod
@@ -467,8 +468,8 @@ class ClassPage(FloatLayout):
                                              background_normal="",
                                              bold=True,
                                              halign="center")
-        self.dropdown_class = DropDownClasses(height_win=self.height)
-        print(self.height)
+        self.dropdown_class = DropDownClasses(height_win=Window.height)
+
         self.btn_class.bind(on_release=self.dropdown_class.open)
         self.dropdown_class.bind(on_select=self.show_next)
 
@@ -501,7 +502,8 @@ class ClassPage(FloatLayout):
         self.design_rect.pos = (instance.pos[0], -instance.size[1]*0.155)
 
     def show_next(self, instance, x):
-        setattr(self.btn_class, "text", x)
+        self.remove_widget(self.btn_next)
+        self.btn_class.text = x
         self.add_widget(self.btn_next)
 
     @staticmethod
@@ -552,7 +554,7 @@ class InterestsPage(FloatLayout):
                                bold=True,
                                halign="center")
 
-        self.title_label.scale = 0.17
+        self.title_label.scale = 0.15
         self.btn_next.scale = 0.07
 
         self.btn_next.bind(size=self.update_font_size)
@@ -810,8 +812,6 @@ class AboutPage(FloatLayout):
 
     def update(self):
         global data_dict
-
-        print(data_dict["Sections"])
 
         if len(data_dict["Sections"]) == 0 or data_dict["Sections"][0] == "Ничего":
             text = "В вашем городе есть кружки вам по интересам, вы можете записаться на них"

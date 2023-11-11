@@ -66,7 +66,7 @@ class DropDownClasses(DropDown):
     def __init__(self, height_win, **kwargs):
         super().__init__(**kwargs)
         self.height_win = height_win
-        self.max_height = 3 * height_win
+        self.max_height = .4 * height_win
         self.container.spacing = 3
 
         for i in range(1, 12):
@@ -74,7 +74,7 @@ class DropDownClasses(DropDown):
                         radius_=10,
                         text=str(i),
                         size_hint_y=None,
-                        height=height_win * 2,
+                        height=height_win * 0.07,
                         background_color=(1, 1, 1, 0.95),
                         background_normal="",
                         color_=(.55, .51, 1),
@@ -91,11 +91,12 @@ class DropDownClasses(DropDown):
         new_font_size = instance.width * instance.scale
         instance.font_size = new_font_size
 
+
 class DropDownCity(DropDown):
     def __init__(self, height_win, **kwargs):
         super().__init__(**kwargs)
         self.height_win = height_win
-        self.max_height = 3 * height_win
+        self.max_height = .4 * height_win
         self.container.spacing = 3
 
         for i in city_dict.keys():
@@ -103,7 +104,7 @@ class DropDownCity(DropDown):
                         radius_=10,
                         text=str(i),
                         size_hint_y=None,
-                        height=height_win * 2,
+                        height=height_win * 0.07,
                         background_color=(1, 1, 1, 0.95),
                         background_normal="",
                         color_=(.55, .51, 1),
@@ -111,7 +112,7 @@ class DropDownCity(DropDown):
                         font_size=height_win * 0.15)
 
             btn.bind(on_release=lambda btn_: self.select(btn_.text))
-            btn.scale = .15
+            btn.scale = .07
             btn.bind(size=self.update_font_size)
             self.add_widget(btn)
 

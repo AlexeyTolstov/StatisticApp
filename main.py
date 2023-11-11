@@ -1,6 +1,5 @@
 from kivy.app import App
 from pages import *
-from kivy.core.window import Window
 
 Window.size = (360, 640)
 # Window.size = (540, 960)
@@ -69,7 +68,6 @@ class MyApp(App):
             self.opened_page.get_data()
         except AttributeError:
             pass
-        print(data_dict)
 
         if res:
             self.main_layout.remove_widget(self.opened_page)
