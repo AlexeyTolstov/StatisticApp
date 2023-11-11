@@ -2,17 +2,18 @@ from kivy.app import App
 from pages import *
 from kivy.core.window import Window
 
-# Window.size = (360, 640)
+Window.size = (360, 640)
+# Window.size = (540, 960)
 
 
 class MyApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.layouts_lst = [
-                            WelcomePage(),
-                            AboutAlexPage(),
-                            AboutElPage(),
-                            AcquaintPage(),
+                            # WelcomePage(),
+                            # AboutAlexPage(),
+                            # AboutElPage(),
+                            # AcquaintPage(),
                             CityPage(),
                             GenderPage(),
                             ClassPage(),
@@ -21,8 +22,7 @@ class MyApp(App):
                             SectionPage(),
                             AboutPage(),
                             TelephonePage(),
-                            CompletionPage()
-        ]
+                            CompletionPage()]
 
         self.opened_page_ind = 0
         self.opened_page = self.layouts_lst[self.opened_page_ind]

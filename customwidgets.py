@@ -74,7 +74,7 @@ class DropDownClasses(DropDown):
                         radius_=10,
                         text=str(i),
                         size_hint_y=None,
-                        height=height_win * 0.35,
+                        height=height_win * 2,
                         background_color=(1, 1, 1, 0.95),
                         background_normal="",
                         color_=(.55, .51, 1),
@@ -82,8 +82,14 @@ class DropDownClasses(DropDown):
                         font_size=height_win * 0.15)
 
             btn.bind(on_release=lambda btn_: self.select(btn_.text))
+            btn.scale = .15
+            btn.bind(size=self.update_font_size)
             self.add_widget(btn)
 
+    @staticmethod
+    def update_font_size(instance, _):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
 
 class DropDownCity(DropDown):
     def __init__(self, height_win, **kwargs):
@@ -97,7 +103,7 @@ class DropDownCity(DropDown):
                         radius_=10,
                         text=str(i),
                         size_hint_y=None,
-                        height=height_win * 0.35,
+                        height=height_win * 2,
                         background_color=(1, 1, 1, 0.95),
                         background_normal="",
                         color_=(.55, .51, 1),
@@ -105,7 +111,14 @@ class DropDownCity(DropDown):
                         font_size=height_win * 0.15)
 
             btn.bind(on_release=lambda btn_: self.select(btn_.text))
+            btn.scale = .15
+            btn.bind(size=self.update_font_size)
             self.add_widget(btn)
+
+    @staticmethod
+    def update_font_size(instance, _):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
 
 
 class NumberKeyboard(BoxLayout):

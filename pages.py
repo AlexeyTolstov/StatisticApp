@@ -215,7 +215,7 @@ class AboutElPage(FloatLayout):
         self.rect.pos = instance.pos
 
         self.design_rect.size = (instance.size[0], instance.size[1]*0.7)
-        self.design_rect.pos = (instance.pos[0], -100)
+        self.design_rect.pos = (instance.pos[0], -instance.size[1]*0.155)
 
     @staticmethod
     def is_can_next():
@@ -468,7 +468,7 @@ class ClassPage(FloatLayout):
                                              bold=True,
                                              halign="center")
         self.dropdown_class = DropDownClasses(height_win=self.height)
-
+        print(self.height)
         self.btn_class.bind(on_release=self.dropdown_class.open)
         self.dropdown_class.bind(on_select=self.show_next)
 
@@ -498,7 +498,7 @@ class ClassPage(FloatLayout):
         self.rect.pos = instance.pos
 
         self.design_rect.size = (instance.size[0], instance.size[1])
-        self.design_rect.pos = (instance.pos[0], -100)
+        self.design_rect.pos = (instance.pos[0], -instance.size[1]*0.155)
 
     def show_next(self, instance, x):
         setattr(self.btn_class, "text", x)
@@ -569,7 +569,7 @@ class InterestsPage(FloatLayout):
         self.rect.pos = instance.pos
 
         self.design_rect.size = (instance.size[0], instance.size[1])
-        self.design_rect.pos = (instance.pos[0], -100)
+        self.design_rect.pos = (instance.pos[0], -instance.size[1]*0.155)
 
     @staticmethod
     def is_can_next():
@@ -719,7 +719,7 @@ class SectionPage(FloatLayout):
         self.rect.pos = instance.pos
 
         self.design_rect.size = (instance.size[0], instance.size[1])
-        self.design_rect.pos = (instance.pos[0], -100)
+        self.design_rect.pos = (instance.pos[0], -instance.size[1]*0.155)
 
     def update(self):
         self.remove_widget(self.title_label)
@@ -732,7 +732,10 @@ class SectionPage(FloatLayout):
                                 size_hint=(0.5, 0.4),
                                 color=(0, 0, 0),
                                 halign="center")
+        self.title_label.scale = 0.12
+        self.title_label.bind(size=self.update_font_size)
         self.add_widget(self.title_label)
+
         self.remove_widget(self.cb)
         self.choice_lst = []
         for subj_name in data_dict["FavoriteSubjects"]:
@@ -912,7 +915,7 @@ class TelephonePage(FloatLayout):
         self.rect.pos = instance.pos
 
         self.design_rect.size = (instance.size[0], instance.size[1])
-        self.design_rect.pos = (instance.pos[0], -100)
+        self.design_rect.pos = (instance.pos[0], -instance.size[1]*0.155)
 
     def show_next(self, instance, x):
         setattr(self.btn_class, "text", x)
