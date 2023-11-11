@@ -52,7 +52,8 @@ class WelcomePage(FloatLayout):
                                           'center_y': 0.65},
                                 size_hint=(0.5, 0.4))
 
-        self.btn_next = RoundedButton(text="Познакомиться получше",
+        self.btn_next = RoundedButton(color_=(.95, .94, .99),
+                                    text="Познакомиться получше",
                                     pos_hint={'center_x': 0.5,
                                               'center_y': 0.1},
                                     size_hint=(0.6, 0.07),
