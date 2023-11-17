@@ -12,7 +12,6 @@ class MyApp(App):
                             WelcomePage(),
                             AboutAlexPage(),
                             AboutElPage(),
-                            AcquaintPage(),
                             CityPage(),
                             GenderPage(),
                             ClassPage(),

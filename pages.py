@@ -4,6 +4,24 @@ from kivy.uix.image import Image
 from kivy.graphics import Color, RoundedRectangle, Rectangle
 from kivy.core.window import Window
 from config import *
+from requests import get
+from funcs import encrypt
+
+
+def post_data():
+    global data_dict
+
+    url = f"http://192.168.4.1/post?telephone={encrypt(data_dict['PhoneNumber'])}&class={data_dict['Class']}&city={encrypt(data_dict['City'])}&gender={encrypt(data_dict['Gender'])}"
+
+    for i, v in enumerate(data_dict['FavoriteSubjects']):
+        url += f"&favorite_subjects{i}={encrypt(v)}"
+
+    for i, v in enumerate(data_dict['Rests']):
+        url += f"&rests{i}={encrypt(v)}"
+
+    for i, v in enumerate(data_dict['Sections']):
+        url += f"&sections{i}={encrypt(v)}"
+    get(url)
 
 
 def switch_new_line(text, max_line_length):
@@ -111,7 +129,7 @@ class AboutAlexPage(FloatLayout):
             Color(82/255, 70/255, 205/255)
             self.design_rect = RoundedRectangle(pos=self.pos, size=self.size, radius=[50,])
 
-        text = "Меня зовут Алексей, в свободное время от школы я увлекаюсь программированием"
+        text = "Меня зовут Алексей, я увлечен программированием и в свободное от школы время занимаюсь им"
 
         self.image = Image(source="Logo/Alex.png",
                            pos_hint={'center_x': 0.5,
@@ -175,8 +193,8 @@ class AboutElPage(FloatLayout):
             Color(82/255, 70/255, 205/255)
             self.design_rect = RoundedRectangle(pos=self.pos, size=self.size, radius=[50,])
 
-        text = "Меня зовут Элеонора, а я увлекаюсь китайским языком"
-
+        text = "Меня зовут Элеонора. Я изучаю китайский язык"
+        text_2 = "Мы рассказали про себя, давай теперь познакомимся с тобой"
         self.image = Image(source="Logo/El.png",
                            pos_hint={'center_x': 0.5,
                                      'center_y': 0.73},
@@ -189,8 +207,15 @@ class AboutElPage(FloatLayout):
                                 size_hint=(0.5, 0.4),
                                 color=(1, 1, 1))
 
+        self.text_2_label = Label(bold=True,
+                                text=switch_new_line(text_2, 30),
+                                pos_hint={'center_x': 0.5,
+                                          'center_y': 0.25},
+                                size_hint=(0.5, 0.4),
+                                color=(1, 1, 1))
+
         self.btn_next = RoundedButton(color_=(.95, .94, .99),
-                                text="Далее",
+                                text="Рассказать про себя",
                                 pos_hint={'center_x': 0.5,
                                              'center_y': 0.1},
                                 size_hint=(0.6, 0.07),
@@ -200,12 +225,15 @@ class AboutElPage(FloatLayout):
                                 halign="center")
 
         self.text_label.scale = 0.11
+        self.text_2_label.scale = 0.11
         self.btn_next.scale = 0.07
 
         self.btn_next.bind(size=self.update_font_size)
         self.text_label.bind(size=self.update_font_size)
+        self.text_2_label.bind(size=self.update_font_size)
 
         self.add_widget(self.text_label)
+        self.add_widget(self.text_2_label)
         self.add_widget(self.image)
         self.add_widget(self.btn_next)
 
@@ -217,56 +245,6 @@ class AboutElPage(FloatLayout):
 
         self.design_rect.size = (instance.size[0], instance.size[1]*0.7)
         self.design_rect.pos = (instance.pos[0], -instance.size[1]*0.155)
-
-    @staticmethod
-    def is_can_next():
-        return True
-
-    @staticmethod
-    def update_font_size(instance, _):
-        new_font_size = instance.width * instance.scale
-        instance.font_size = new_font_size
-
-
-class AcquaintPage(FloatLayout):
-    def __init__(self):
-        super().__init__()
-        with self.canvas.before:
-            Color(.38, .33, .86)
-            self.rect = Rectangle(size=self.size, pos=self.pos)
-
-        text = "Мы рассказали про себя, давай теперь познакомимся с тобой"
-
-        self.text_label = Label(bold=True,
-                                text=switch_new_line(text, 20),
-                                pos_hint={'center_x': 0.5,
-                                          'center_y': 0.6},
-                                size_hint=(0.5, 0.4))
-
-        self.btn_next = RoundedButton(color_=(1, 1, 1),
-                                text="Далее",
-                                pos_hint={'center_x': 0.5,
-                                          'center_y': 0.1},
-                                size_hint=(0.6, 0.07),
-                                color=(.55, .51, 1),
-                                background_normal="",
-                                bold=True,
-                                halign="center")
-
-        self.text_label.scale = 0.15
-        self.btn_next.scale = 0.07
-
-        self.btn_next.bind(size=self.update_font_size)
-        self.text_label.bind(size=self.update_font_size)
-
-        self.add_widget(self.text_label)
-        self.add_widget(self.btn_next)
-
-        self.bind(size=self.update_rect, pos=self.update_rect)
-
-    def update_rect(self, instance, value):
-        self.rect.size = instance.size
-        self.rect.pos = instance.pos
 
     @staticmethod
     def is_can_next():
@@ -513,7 +491,7 @@ class ClassPage(FloatLayout):
 
     def get_data(self):
         global data_dict
-        data_dict["Class"] = self.btn_class.text
+        data_dict["Class"] = int(self.btn_class.text)
 
     @staticmethod
     def update_font_size(instance, _):
@@ -541,10 +519,6 @@ class InterestsPage(FloatLayout):
                                 color=(0, 0, 0),
                                 halign="center")
 
-        self.interesting = MultiplyChoiceCheckBox(choices=classes[7].keys(),
-                                                  size_hint=(.75, .6),
-                                                  pos_hint={'center_x': 0.4, 'center_y': 0.5})
-
         self.btn_next = RoundedButton(color_=(.95, .94, .99),
                                 text="Далее",
                                pos_hint={'center_x': 0.5,
@@ -562,7 +536,6 @@ class InterestsPage(FloatLayout):
         self.title_label.bind(size=self.update_font_size)
 
         self.add_widget(self.title_label)
-        self.add_widget(self.interesting)
         self.add_widget(self.btn_next)
 
         self.bind(size=self.update_rect, pos=self.update_rect)
@@ -573,6 +546,12 @@ class InterestsPage(FloatLayout):
 
         self.design_rect.size = (instance.size[0], instance.size[1])
         self.design_rect.pos = (instance.pos[0], -instance.size[1]*0.155)
+
+    def update(self):
+        self.interesting = MultiplyChoiceCheckBox(choices=city_dict[data_dict["City"]][data_dict["Class"]].keys(),
+                                                  size_hint=(.75, .6),
+                                                  pos_hint={'center_x': 0.4, 'center_y': 0.5})
+        self.add_widget(self.interesting)
 
     @staticmethod
     def is_can_next():
@@ -688,7 +667,7 @@ class SectionPage(FloatLayout):
 
         self.choice_lst = []
         for subj_name in data_dict["FavoriteSubjects"]:
-            self.choice_lst += classes[int(data_dict["Class"])][subj_name]
+            self.choice_lst += city_dict[data_dict["City"]][int(data_dict["Class"])][subj_name]
         self.choice_lst += ["Другое", "Ничего"]
         self.cb = MultiplyChoiceCheckBox(self.choice_lst,
                                          pos_hint={'center_x': 0.4,
@@ -742,7 +721,7 @@ class SectionPage(FloatLayout):
         self.remove_widget(self.cb)
         self.choice_lst = []
         for subj_name in data_dict["FavoriteSubjects"]:
-            self.choice_lst += classes[int(data_dict["Class"])][subj_name]
+            self.choice_lst += city_dict[data_dict["City"]][int(data_dict["Class"])][subj_name]
         self.choice_lst += ["Другое", "Ничего"]
         self.cb = MultiplyChoiceCheckBox(self.choice_lst,
                                          pos_hint={'center_x': 0.4,
@@ -940,6 +919,10 @@ class TelephonePage(FloatLayout):
         if len(self.telephone_label.text) > 0:
             self.telephone_label.text = self.telephone_label.text[:-1]
 
+    def get_data(self):
+        global data_dict
+        data_dict["PhoneNumber"] = self.telephone_label.text
+
     def enter(self, _):
         if self.is_opened_kb:
             self.is_opened_kb = False
@@ -951,9 +934,6 @@ class TelephonePage(FloatLayout):
     def is_can_next():
         return True
 
-    def get_data(self):
-        global data_dict
-        data_dict["PhoneNumber"] = self.telephone_label.text
 
     @staticmethod
     def update_font_size(instance, _):
@@ -1031,6 +1011,9 @@ class CompletionPage(FloatLayout):
         self.add_widget(self.btn_next)
 
         self.bind(size=self.update_rect, pos=self.update_rect)
+
+    def update(self):
+        post_data()
 
     def update_rect(self, instance, value):
         self.rect.size = instance.size
