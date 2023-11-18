@@ -2,7 +2,6 @@ from kivy.app import App
 from pages import *
 
 Window.size = (360, 640)
-# Window.size = (540, 960)
 
 
 class MyApp(App):
