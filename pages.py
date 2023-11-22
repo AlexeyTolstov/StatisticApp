@@ -4,25 +4,26 @@ from kivy.uix.image import Image
 from kivy.graphics import Color, RoundedRectangle, Rectangle
 from kivy.core.window import Window
 from config import *
-from requests import get
-from funcs import encrypt
+import requests
 from kivy.clock import Clock
 
 
-def post_data():
+def send_message():
     global data_dict
-
-    url = f"http://192.168.4.1/post?telephone={encrypt(data_dict['PhoneNumber'])}&class={data_dict['Class']}&city={encrypt(data_dict['City'])}&gender={encrypt(data_dict['Gender'])}"
-
-    for i, v in enumerate(data_dict['FavoriteSubjects']):
-        url += f"&favorite_subjects{i}={encrypt(v)}"
-
-    for i, v in enumerate(data_dict['Rests']):
-        url += f"&rests{i}={encrypt(v)}"
-
-    for i, v in enumerate(data_dict['Sections']):
-        url += f"&sections{i}={encrypt(v)}"
-    get(url)
+    user_id = [5484961787,
+               1231921368]
+    print(2)
+    TOKEN = "6943960254:AAEnuqRh79rm_wWN187E9JQEGjA0zAdAFpY"
+    message = ""
+    for k, v in data_dict.items():
+        message += k + ": " + str(v) + "\n"
+        print(message)
+    print(message)
+    for chat_id in user_id:
+        print(chat_id)
+        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={chat_id}&text={message}"
+        requests.get(url)
+    print("Отправлено")
 
 
 def switch_new_line(text, max_line_length):
@@ -621,7 +622,7 @@ class InterestsPage(FloatLayout):
             self.add_notifications(None, text="Выбери хотя бы один предмет", title="Не верный ввод")
             return False
         if 2 < len(self.interesting.get_data()):
-            self.add_notifications(None, text="Выбери меньше двух предметов", title="Не верный ввод")
+            self.add_notifications(None, text="Выбери меньше трех предметов", title="Не верный ввод")
             return False
         return True
 
@@ -704,7 +705,7 @@ class RestPage(FloatLayout):
             self.add_notifications(None, text="Выбери хотя бы что-то", title="Не верный ввод")
             return False
         if 2 < len(self.rest_cb.get_data()):
-            self.add_notifications(None, text="Выбери меньше двух вариантов", title="Не верный ввод")
+            self.add_notifications(None, text="Выбери меньше трех вариантов", title="Не верный ввод")
             return False
         return True
 
@@ -1098,7 +1099,9 @@ class CompletionPage(FloatLayout):
         self.bind(size=self.update_rect, pos=self.update_rect)
 
     def update(self):
-        post_data()
+        print(1)
+        send_message()
+        print(3)
 
     def update_rect(self, instance, value):
         self.rect.size = instance.size

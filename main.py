@@ -7,7 +7,8 @@ from pages import *
 class MyApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.layouts_lst = [WelcomePage(),
+        self.layouts_lst = [
+                            WelcomePage(),
                             AboutAlexPage(),
                             AboutElPage(),
                             CityPage(),
