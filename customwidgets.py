@@ -2,9 +2,11 @@ from kivy.uix.checkbox import CheckBox
 from kivy.uix.label import Label
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
+from kivy.graphics import Rectangle
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Color, RoundedRectangle
+from kivy.uix.floatlayout import FloatLayout
 
 from config import *
 
@@ -15,13 +17,19 @@ class GenderLayout(BoxLayout):
         self.orientation = "horizontal"
 
         self.man_checkbox = CheckBox(group="gender",
-                                     color=(1, 1, 1, 1))
+                                     background_radio_down="on_radio_button.png",
+                                     background_radio_normal="off_radio_button.png",
+                                     allow_no_selection=False)
+
         self.man_checkbox.label = Label(text="Мальчик",
                                         bold=True)
         self.add_widget(self.man_checkbox)
         self.add_widget(self.man_checkbox.label)
 
-        self.woman_checkbox = CheckBox(group="gender")
+        self.woman_checkbox = CheckBox(group="gender",
+                                     background_radio_down="on_radio_button.png",
+                                     background_radio_normal="off_radio_button.png",
+                                     allow_no_selection=False)
         self.woman_checkbox.label = Label(text="Девочка",
                                           bold=True)
 
@@ -45,6 +53,44 @@ class GenderLayout(BoxLayout):
 
     def check_data(self):
         return self.man_checkbox.active or self.woman_checkbox.active
+
+
+class Notifications(FloatLayout):
+    def __init__(self, title, text, **kwargs):
+        super().__init__(**kwargs)
+
+        self.color_ = (1, .55, .7)
+
+        self.title_label = Label(text=title, bold=True,
+                                 pos_hint={'center_x': 0.5,
+                                           'center_y': 0.7},
+                                 size_hint=(1, 0.07))
+        self.text_label = Label(text=text, bold=True,
+                                 pos_hint={'center_x': 0.5,
+                                           'center_y': 0.3},
+                                 size_hint=(1, 0.07))
+
+        self.add_widget(self.title_label)
+        self.add_widget(self.text_label)
+
+        self.title_label.scale = 0.05
+        self.text_label.scale = 0.04
+
+        self.title_label.bind(size=self.update_font_size)
+        self.text_label.bind(size=self.update_font_size)
+
+        self.bind(pos=self.update_rect, size=self.update_rect)
+
+    def update_rect(self, instance, value):
+        self.canvas.before.clear()
+        with self.canvas.before:
+            Color(*self.color_)
+            RoundedRectangle(pos=self.pos, size=self.size, radius=[30, ])
+
+    @staticmethod
+    def update_font_size(instance, _):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
 
 
 class RoundedButton(Button):
@@ -82,7 +128,7 @@ class DropDownClasses(DropDown):
                         font_size=height_win * 0.15)
 
             btn.bind(on_release=lambda btn_: self.select(btn_.text))
-            btn.scale = .15
+            btn.scale = .1
             btn.bind(size=self.update_font_size)
             self.add_widget(btn)
 
@@ -246,12 +292,13 @@ class MultiplyChoiceCheckBox(BoxLayout):
 
         for choice in choices:
             layout = BoxLayout(orientation="horizontal")
-            layout.cb = CheckBox()
+            layout.cb = CheckBox(background_checkbox_down="on_checkbox.png",
+                                background_checkbox_normal="off_checkbox.png")
             layout.cb.label = Label(text=str(choice),
                                     bold=True)
 
             layout.cb.label.bind(size=self.update_font_size)
-            layout.cb.label.scale = 0.13
+            layout.cb.label.scale = 0.15
 
             layout.add_widget(layout.cb)
             layout.add_widget(layout.cb.label)

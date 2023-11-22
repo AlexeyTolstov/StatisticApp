@@ -6,6 +6,7 @@ from kivy.core.window import Window
 from config import *
 from requests import get
 from funcs import encrypt
+from kivy.clock import Clock
 
 
 def post_data():
@@ -104,6 +105,56 @@ class WelcomePage(FloatLayout):
         self.add_widget(self.btn_next)
 
         self.bind(size=self.update_rect, pos=self.update_rect)
+
+    def update_rect(self, instance, value):
+        self.rect.size = instance.size
+        self.rect.pos = instance.pos
+
+    @staticmethod
+    def is_can_next():
+        return True
+
+    @staticmethod
+    def update_font_size(instance, _):
+        new_font_size = instance.width * instance.scale
+        instance.font_size = new_font_size
+
+
+class TestPage(FloatLayout):
+    def __init__(self):
+        super().__init__()
+        self.notification = None
+        with self.canvas.before:
+            Color(.38, .33, .86)
+            self.rect = Rectangle(size=self.size, pos=self.pos)
+
+        self.btn = RoundedButton(color_=(.95, .94, .99),
+                                    text="получить уведомление",
+                                    pos_hint={'center_x': 0.5,
+                                              'center_y': 0.1},
+                                    size_hint=(0.6, 0.07),
+                                    color=(.55, .51, 1),
+                                    background_normal="",
+                                    bold=True,
+                                    halign="center")
+
+        self.btn.scale = 0.07
+        self.btn.bind(size=self.update_font_size)
+        self.add_widget(self.btn)
+        self.bind(size=self.update_rect, pos=self.update_rect)
+        self.btn.bind(on_release=self.add_notifications)
+
+    def remove_widget_callback(self, dt):
+        self.remove_widget(self.notification)
+
+    def add_notifications(self, instance):
+        self.notification = Notifications(title="Title", text="Text",
+                                          size_hint=(1, .1),
+                                          pos_hint={'center_x': 0.5,
+                                              'center_y': 0.2})
+        self.notification.update_rect(self.notification, None)
+        Clock.schedule_once(self.remove_widget_callback, 2)
+        self.add_widget(self.notification)
 
     def update_rect(self, instance, value):
         self.rect.size = instance.size
@@ -540,6 +591,18 @@ class InterestsPage(FloatLayout):
 
         self.bind(size=self.update_rect, pos=self.update_rect)
 
+    def remove_widget_callback(self, dt):
+        self.remove_widget(self.notification)
+
+    def add_notifications(self, instance, title, text):
+        self.notification = Notifications(title=title, text=text,
+                                          size_hint=(1, .1),
+                                          pos_hint={'center_x': 0.5,
+                                              'center_y': 0.2})
+        self.notification.update_rect(self.notification, None)
+        Clock.schedule_once(self.remove_widget_callback, 2)
+        self.add_widget(self.notification)
+
     def update_rect(self, instance, value):
         self.rect.size = instance.size
         self.rect.pos = instance.pos
@@ -549,12 +612,17 @@ class InterestsPage(FloatLayout):
 
     def update(self):
         self.interesting = MultiplyChoiceCheckBox(choices=city_dict[data_dict["City"]][data_dict["Class"]].keys(),
-                                                  size_hint=(.75, .6),
+                                                  size_hint=(.75, .7),
                                                   pos_hint={'center_x': 0.4, 'center_y': 0.5})
         self.add_widget(self.interesting)
 
-    @staticmethod
-    def is_can_next():
+    def is_can_next(self):
+        if 0 == len(self.interesting.get_data()):
+            self.add_notifications(None, text="Выбери хотя бы один предмет", title="Не верный ввод")
+            return False
+        if 2 < len(self.interesting.get_data()):
+            self.add_notifications(None, text="Выбери меньше двух предметов", title="Не верный ввод")
+            return False
         return True
 
     @staticmethod
@@ -619,8 +687,25 @@ class RestPage(FloatLayout):
         self.design_rect.size = (instance.size[0], instance.size[1]*0.9)
         self.design_rect.pos = (instance.pos[0], instance.pos[1] + instance.size[1] * 0.2)
 
-    @staticmethod
-    def is_can_next():
+    def remove_widget_callback(self, dt):
+        self.remove_widget(self.notification)
+
+    def add_notifications(self, instance, title, text):
+        self.notification = Notifications(title=title, text=text,
+                                          size_hint=(1, .1),
+                                          pos_hint={'center_x': 0.5,
+                                              'center_y': 0.2})
+        self.notification.update_rect(self.notification, None)
+        Clock.schedule_once(self.remove_widget_callback, 2)
+        self.add_widget(self.notification)
+
+    def is_can_next(self):
+        if 0 == len(self.rest_cb.get_data()):
+            self.add_notifications(None, text="Выбери хотя бы что-то", title="Не верный ввод")
+            return False
+        if 2 < len(self.rest_cb.get_data()):
+            self.add_notifications(None, text="Выбери меньше двух вариантов", title="Не верный ввод")
+            return False
         return True
 
     @staticmethod
@@ -670,9 +755,9 @@ class SectionPage(FloatLayout):
             self.choice_lst += city_dict[data_dict["City"]][int(data_dict["Class"])][subj_name]
         self.choice_lst += ["Другое", "Ничего"]
         self.cb = MultiplyChoiceCheckBox(self.choice_lst,
-                                         pos_hint={'center_x': 0.4,
+                                         pos_hint={'center_x': 0.25,
                                                    'center_y': 0.5},
-                                         size_hint=(0.6, 0.5))
+                                         size_hint=(0.9, 0.6))
 
         self.btn_next = RoundedButton(color_=(.95, .94, .99),
                                 text="Далее",
@@ -726,7 +811,7 @@ class SectionPage(FloatLayout):
         self.cb = MultiplyChoiceCheckBox(self.choice_lst,
                                          pos_hint={'center_x': 0.4,
                                                    'center_y': 0.5},
-                                         size_hint=(0.6, 0.5))
+                                         size_hint=(0.8, 0.6))
         self.add_widget(self.cb)
 
     @staticmethod
